@@ -15,25 +15,33 @@
 		}-->
 			#Required{
 			float: left;
-			width: 200px;
-			height: 600px;
+			width: 1100px;
+			height: 200px;
 			margin: 10px;
-			padding: 10px;
+			padding: 5px;
 			border: 4px solid black;
 			}
 			
 			#Prereqs {
 			float: left;
-			width: 300px;
-			height: 150px;
+			width: 900px;
+			height: 200px;
 			margin: 10px;
 			padding: 10px;
 			border: 4px solid black;
 			}
+
+			#SemesterBlock{
+			float: left;
+			width: 1100px;
+			height: 200px;
+			margin: 10px;
+			padding: 10px;
+			}
 			
 			Semester{
 			float: left;
-			width: 150px;
+			width: 200px;
 			height: 200px;
 			margin: 10px;
 			padding: 10px;
@@ -42,8 +50,8 @@
 			
 			#Info{
 			float: left;
-                        top: 600px;
-			width: 300px;
+            top: 600px;
+			width: 500px;
 			height: 150px;
 			margin: 10px;
 			padding: 10px;
@@ -52,7 +60,7 @@
 			
 			#Conflicts{
 			float: left;
-			width: 300px;
+			width: 500px;
 			height: 150px;
 			margin: 10px;
 			padding: 10px;
@@ -60,20 +68,23 @@
 			}
 			
 			class{
-			width: 30px;
+			width: 50px;
 			height: 30px;
 			float: left;
 			margin: 5px;
 			padding: 10px;
 			border: 1px solid black;
 			}
-
 			#above { 
-			   height:700px; 
+			   height:1000px; 
 			}
-			#below { 
-			   height:500px; 
-			}
+			#InformationBlock { 
+			float: left;
+			width: 1100px;
+			height: 200px;
+			margin: 10px;
+			padding: 10px;
+			}			}
 		</style>
       
       <script type="text/javascript">
@@ -89,11 +100,9 @@
 				ev.preventDefault();
 				info();
 			}
-
 			function drag(ev) {
 				ev.dataTransfer.setData("text", ev.target.id);
 			}
-
 			function drop(ev) {
 				ev.preventDefault();
 				var data = ev.dataTransfer.getData("text");
@@ -105,7 +114,7 @@
 			var end = document.getElementById("last").value;
 					
 			if(start > end || start < 2014){
-						alert("Incorrect inputs in Semester Generator seciton");
+						alert("Incorrect inputs in Semester Generator section");
 					}
 					//else{
 						//var x = (end - start)*2; 
@@ -157,21 +166,47 @@
 			<div id="AE345" draggable="true" ondragstart="drag(event)" title = "Fluid Dynamics"><class>AE 345</class></div>
 			<div id="KUCore4" draggable="true" ondragstart="drag(event)" title = "ECON"><class>KU Core 4</class></div>
 			<div id="Math127" draggable="true" ondragstart="drag(event)" title = "Calc III"><class>Math 127</class></div>
+			<div id="CE310" draggable="true" ondragstart="drag(event)" title = "Strength of Materials"><class>CE 310</class></div>
+			<div id="AE260" draggable="true" ondragstart="drag(event)" title = "Intro to Astronautics"><class>AE 360</class></div>
+			<div id="AE445" draggable="true" ondragstart="drag(event)" title = "Aerodynamics & Performance"><class>AE 445</class></div>
+			<div id="ME312" draggable="true" ondragstart="drag(event)" title = "Thermodynamics"><class>ME 312</class></div>
+			<div id="Math290" draggable="true" ondragstart="drag(event)" title = "Elementary Linear Algebra"><class>Math 290</class></div>
+			<div id="AE550" draggable="true" ondragstart="drag(event)" title = "Dynamics of Flight I"><class>AE 550</class></div>
+			<div id="AE571" draggable="true" ondragstart="drag(event)" title = "Rep. Propulsion"><class>AE 571</class></div>
+			<div id="AE507" draggable="true" ondragstart="drag(event)" title = "Aero. Structures I"><class>AE 507</class></div>
+			<div id="AE545" draggable="true" ondragstart="drag(event)" title = "Aerodynamics"><class>AE 545</class></div>
+			<div id="AE421" draggable="true" ondragstart="drag(event)" title = "Computer Graphics"><class>AE 421</class></div>
+			<div id="AE551" draggable="true" ondragstart="drag(event)" title = "Dynamics of Flight II"><class>AE 551</class></div>
+			<div id="AE572" draggable="true" ondragstart="drag(event)" title = "Jet Propulsion"><class>AE 572</class></div>
+			<div id="AE508" draggable="true" ondragstart="drag(event)" title = "Aero. Structures II"><class>AE 508</class></div>
+			<div id="EECS316" draggable="true" ondragstart="drag(event)" title = "Circuits, Electronics, and Instrumentation"><class>EECS 316/318</class></div>
+			<div id="AE521" draggable="true" ondragstart="drag(event)" title = "Aircraft Design I"><class>AE 521</class></div>
+			<div id="AE510" draggable="true" ondragstart="drag(event)" title = "Materials and Processes"><class>AE 510</class></div>
+			<div id="AE 590" draggable="true" ondragstart="drag(event)" title = "Senior Seminar"><class>AE 590</class></div>
+			<div id="Tech1" draggable="true" ondragstart="drag(event)" title = "Technical Elective"><class>Tech Elec 1</class></div>
+			<div id="KUCore5" draggable="true" ondragstart="drag(event)" title = "AE 4.1"><class>KU Core 5</class></div>
+			<div id="AE522" draggable="true" ondragstart="drag(event)" title = "Aircraft Design II"><class>AE 522/3/4</class></div>
+			<div id="AE430" draggable="true" ondragstart="drag(event)" title = "Aerospace Instrumentation"><class>AE 430</class></div>
+			<div id="Tech2" draggable="true" ondragstart="drag(event)" title = "Technical Elective"><class>Tech Elec 2</class></div>
+			<div id="Tech3" draggable="true" ondragstart="drag(event)" title = "Technical Elective"><class>Tech Elec 3</class></div>
+			<div id="KUCore6" draggable="true" ondragstart="drag(event)" title = "AE 4.2"><class>KU Core 6</class></div>
 		</div>
 
-		<div id="s1" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><Semester>Fall 1</Semester></div>
-		<div id="s2" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><Semester>Spring 1</Semester></div>
-                <div id="s3" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><Semester>Fall 2</Semester></div>
-		<div id="s4" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><Semester>Spring 2</Semester></div>
-                <div id="s5" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><Semester>Fall 3</Semester></div>
-		<div id="s6" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><Semester>Spring 3</Semester></div>
-                <div id="s7" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><Semester>Fall 4</Semester></div>
-		<div id="s8" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><Semester>Spring 4</Semester></div>
-	
+		<div id = "SemesterBlock">
+			<div id="s1" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><Semester>Fall 1</Semester></div>
+			<div id="s2" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><Semester>Spring 1</Semester></div>
+	                <div id="s3" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><Semester>Fall 2</Semester></div>
+			<div id="s4" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><Semester>Spring 2</Semester></div>
+	                <div id="s5" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><Semester>Fall 3</Semester></div>
+			<div id="s6" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><Semester>Spring 3</Semester></div>
+	                <div id="s7" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><Semester>Fall 4</Semester></div>
+			<div id="s8" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><Semester>Spring 4</Semester></div>
+			<div id="Prereqs" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><header>Prior Credits</header></div>
+		</div>
+
 	</div>
 
-	<div id = "below">
-		<div id="Prereqs" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><header>Prior Credits</header></div>
+	<div id = "InformationBlock">
 		<div id="Conflicts" draggable="false"><header>Conflicts</header></div>
 		<div id="Info">
 		<header>Info</header>
