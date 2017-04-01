@@ -1,0 +1,183 @@
+<!DOCTYPE HTML>
+<html>
+   <head>
+      
+      <style>
+		<!--/* Prevent the text contents of draggable elements from being selectable. */
+		[draggable] {
+		  -moz-user-select: none;
+		  -khtml-user-select: none;
+		  -webkit-user-select: none;
+		  user-select: none;
+		  /* Required to make elements draggable in old WebKit */
+		  -khtml-user-drag: element;
+		  -webkit-user-drag: element;
+		}-->
+			#Required{
+			float: left;
+			width: 200px;
+			height: 600px;
+			margin: 10px;
+			padding: 10px;
+			border: 4px solid black;
+			}
+			
+			#Prereqs {
+			float: left;
+			width: 300px;
+			height: 150px;
+			margin: 10px;
+			padding: 10px;
+			border: 4px solid black;
+			}
+			
+			Semester{
+			float: left;
+			width: 150px;
+			height: 200px;
+			margin: 10px;
+			padding: 10px;
+			border: 4px solid black;
+			}
+			
+			#Info{
+			float: left;
+                        top: 600px;
+			width: 300px;
+			height: 150px;
+			margin: 10px;
+			padding: 10px;
+			border: 4px solid black;
+			}
+			
+			#Conflicts{
+			float: left;
+			width: 300px;
+			height: 150px;
+			margin: 10px;
+			padding: 10px;
+			border: 4px solid black;
+			}
+			
+			class{
+			width: 30px;
+			height: 30px;
+			float: left;
+			margin: 5px;
+			padding: 10px;
+			border: 1px solid black;
+			}
+
+			#above { 
+			   height:700px; 
+			}
+			#below { 
+			   height:500px; 
+			}
+		</style>
+      
+      <script type="text/javascript">
+         function dragStart(ev) {
+            ev.dataTransfer.effectAllowed='move';
+            ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
+            ev.dataTransfer.setDragImage(ev.target,0,0);
+            
+            return true;
+         }
+		 
+			function allowDrop(ev) {
+				ev.preventDefault();
+				info();
+			}
+
+			function drag(ev) {
+				ev.dataTransfer.setData("text", ev.target.id);
+			}
+
+			function drop(ev) {
+				ev.preventDefault();
+				var data = ev.dataTransfer.getData("text");
+				ev.target.appendChild(document.getElementById(data));
+			}
+			
+			function h(){
+			var start = document.getElementById("first").value;
+			var end = document.getElementById("last").value;
+					
+			if(start > end || start < 2014){
+						alert("Incorrect inputs in Semester Generator seciton");
+					}
+					//else{
+						//var x = (end - start)*2; 
+						//while(x!=0){
+						//document.open();
+						//window.document.write("<p>pasopa</p>")
+						//var btn = document.getElementById("s1").innerHTML = "Fall 2018";
+						//document.write("<h1>hola</h1>");
+						//x = x-1;
+						//}
+					//document.close();
+					//}
+			}
+			
+      </script>
+      
+   </head>
+   <body>
+		<div style="color:#3366ff;font-family:arial;" align="center">
+		<h3>Course Planner - Pijamajammers</h3>
+		
+		
+		
+		
+		<h5> Semester Generator </h5>
+		<form>
+		Starting Year:
+		<input type="text" id="first" value="">
+		   Graduation Year:
+		<input type="text" id="last" value="">
+		<button onclick="h()">GO</button>
+		</form>
+		
+		
+	<div id="above">
+		<div id="Required" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><Required>Required Courses</Required>
+			<div id="Math125" draggable="true" ondragstart="drag(event)" title = "Calc 1"><class>Math 125</class></div>
+			<div id="Chem150" draggable="true" ondragstart="drag(event)"title = "Chemistry for Engineers"><class>Chem 150</class></div>
+			<div id="AE245" draggable="true" ondragstart="drag(event)" title = "Intro to Aero"><class>AE 245</class></div>
+			<div id="KUCore1" draggable="true" ondragstart="drag(event)" title = "GE 2.1"><class>KU Core 1</class></div>
+			<div id="Math126" draggable="true" ondragstart="drag(event)" title = "Calc II"><class>Math 126</class></div>
+			<div id="KUCore2" draggable="true" ondragstart="drag(event)" title = "GE 2.1"><class>KU Core 2</class></div>
+			<div id="PHSX210" draggable="true" ondragstart="drag(event)" title = "Physics I + lab"><class>PHSX 210/216</class></div>
+			<div id="AE211" draggable="true" ondragstart="drag(event)" title = "Computing for Engineers"><class>AE 211</class></div>
+			<div id="KUCore3" draggable="true" ondragstart="drag(event)" title = "GE 3H"><class>KU Core 3</class></div>
+			<div id="Math220" draggable="true" ondragstart="drag(event)" title = "Applied Differential Equations"><class>Math 220</class></div>
+			<div id="CE301" draggable="true" ondragstart="drag(event)" title = "Statics and Dynamics"><class>CE 301</class></div>
+			<div id="PHSX212" draggable="true" ondragstart="drag(event)" title = "Physics II + lab"><class>PHSX 212/236</class></div>
+			<div id="AE345" draggable="true" ondragstart="drag(event)" title = "Fluid Dynamics"><class>AE 345</class></div>
+			<div id="KUCore4" draggable="true" ondragstart="drag(event)" title = "ECON"><class>KU Core 4</class></div>
+			<div id="Math127" draggable="true" ondragstart="drag(event)" title = "Calc III"><class>Math 127</class></div>
+		</div>
+
+		<div id="s1" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><Semester>Fall 1</Semester></div>
+		<div id="s2" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><Semester>Spring 1</Semester></div>
+                <div id="s3" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><Semester>Fall 2</Semester></div>
+		<div id="s4" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><Semester>Spring 2</Semester></div>
+                <div id="s5" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><Semester>Fall 3</Semester></div>
+		<div id="s6" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><Semester>Spring 3</Semester></div>
+                <div id="s7" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><Semester>Fall 4</Semester></div>
+		<div id="s8" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><Semester>Spring 4</Semester></div>
+	
+	</div>
+
+	<div id = "below">
+		<div id="Prereqs" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><header>Prior Credits</header></div>
+		<div id="Conflicts" draggable="false"><header>Conflicts</header></div>
+		<div id="Info">
+		<header>Info</header>
+		<p></p>
+		</div>
+	</div>
+		
+   </body>
+</html>
