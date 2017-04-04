@@ -9,74 +9,90 @@
   -webkit-user-drag: element;
 }-->
   #Required{
-  float: left;
-  width: 1100px;
-  height: 200px;
-  margin: 10px;
-  padding: 5px;
-  border: 4px solid black;
+    float: left;
+    width: 1100px;
+    height: 200px;
+    margin: 10px;
+    padding: 5px;
+    border: 4px solid black;
   }
 
   #Prereqs {
-  float: left;
-  width: 900px;
-  height: 200px;
-  margin: 10px;
-  padding: 10px;
-  border: 4px solid black;
+    float: left;
+    width: 900px;
+    height: 200px;
+    margin: 10px;
+    padding: 5px;
+    border: 4px solid black;
   }
 
   #SemesterBlock{
-  float: left;
-  width: 1100px;
-  height: 200px;
-  margin: 10px;
-  padding: 10px;
+    float: left;
+    width: 1100px;
+    height: 200px;
+    margin: 10px;
+    padding: 5px;
   }
 
+
   Semester{
-  float: left;
-  width: 200px;
-  height: 200px;
-  margin: 10px;
-  padding: 10px;
-  border: 4px solid black;
+    float: left;
+    width: 200px;
+    height: 200px;
+    margin: 10px;
+    padding: 5px;
+    border: 4px solid black;
   }
 
   #Info{
-  float: left;
-        top: 600px;
-  width: 500px;
-  height: 150px;
-  margin: 10px;
-  padding: 10px;
-  border: 4px solid black;
+    float: left;
+    top: 600px;
+    width: 500px;
+    height: 150px;
+    margin: 10px;
+    padding: 5px;
+    border: 4px solid black;
   }
 
   #Conflicts{
-  float: left;
-  width: 500px;
-  height: 150px;
-  margin: 10px;
-  padding: 10px;
-  border: 4px solid black;
+    float: left;
+    width: 500px;
+    height: 150px;
+    margin: 10px;
+    padding: 5px;
+    border: 4px solid black;
   }
 
-  class{
-  width: 50px;
-  height: 30px;
-  float: left;
-  margin: 5px;
-  padding: 10px;
-  border: 1px solid black;
+  *[draggable=true]
+  {
+    width: 50px;
+    height: 30px;
+    float: left;
+    margin: 5px;
+    padding: 10px;
+    border: 1px solid black;
   }
-  #above {
-     height:1000px;
+
+  .title
+  {
+    background-color:#3366ff; 
+    text-align:center;
+    color:white;
+    padding: 2px 0px;
   }
-  #InformationBlock {
-  float: left;
-  width: 1100px;
-  height: 200px;
-  margin: 10px;
-  padding: 10px;
-  }			}
+
+
+  #above 
+  {
+    height:1000px;
+  }
+
+  #InformationBlock 
+  {
+    float: left;
+    width: 1100px;
+    height: 200px;
+    margin: 10px;
+    padding: 10px;
+  }			
+}
