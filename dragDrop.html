@@ -1,144 +1,13 @@
 <!DOCTYPE HTML>
 <html>
    <head>
-      
-      <style>
-		<!--/* Prevent the text contents of draggable elements from being selectable. */
-		[draggable] {
-		  -moz-user-select: none;
-		  -khtml-user-select: none;
-		  -webkit-user-select: none;
-		  user-select: none;
-		  /* Required to make elements draggable in old WebKit */
-		  -khtml-user-drag: element;
-		  -webkit-user-drag: element;
-		}-->
-			#Required{
-			float: left;
-			width: 1100px;
-			height: 200px;
-			margin: 10px;
-			padding: 5px;
-			border: 4px solid black;
-			}
-			
-			#Prereqs {
-			float: left;
-			width: 900px;
-			height: 200px;
-			margin: 10px;
-			padding: 10px;
-			border: 4px solid black;
-			}
-
-			#SemesterBlock{
-			float: left;
-			width: 1100px;
-			height: 200px;
-			margin: 10px;
-			padding: 10px;
-			}
-			
-			Semester{
-			float: left;
-			width: 200px;
-			height: 200px;
-			margin: 10px;
-			padding: 10px;
-			border: 4px solid black;
-			}
-			
-			#Info{
-			float: left;
-            top: 600px;
-			width: 500px;
-			height: 150px;
-			margin: 10px;
-			padding: 10px;
-			border: 4px solid black;
-			}
-			
-			#Conflicts{
-			float: left;
-			width: 500px;
-			height: 150px;
-			margin: 10px;
-			padding: 10px;
-			border: 4px solid black;
-			}
-			
-			class{
-			width: 50px;
-			height: 30px;
-			float: left;
-			margin: 5px;
-			padding: 10px;
-			border: 1px solid black;
-			}
-			#above { 
-			   height:1000px; 
-			}
-			#InformationBlock { 
-			float: left;
-			width: 1100px;
-			height: 200px;
-			margin: 10px;
-			padding: 10px;
-			}			}
-		</style>
-      
-      <script type="text/javascript">
-         function dragStart(ev) {
-            ev.dataTransfer.effectAllowed='move';
-            ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
-            ev.dataTransfer.setDragImage(ev.target,0,0);
-            
-            return true;
-         }
-		 
-			function allowDrop(ev) {
-				ev.preventDefault();
-				info();
-			}
-			function drag(ev) {
-				ev.dataTransfer.setData("text", ev.target.id);
-			}
-			function drop(ev) {
-				ev.preventDefault();
-				var data = ev.dataTransfer.getData("text");
-				ev.target.appendChild(document.getElementById(data));
-			}
-			
-			function h(){
-			var start = document.getElementById("first").value;
-			var end = document.getElementById("last").value;
-					
-			if(start > end || start < 2014){
-						alert("Incorrect inputs in Semester Generator section");
-					}
-					//else{
-						//var x = (end - start)*2; 
-						//while(x!=0){
-						//document.open();
-						//window.document.write("<p>pasopa</p>")
-						//var btn = document.getElementById("s1").innerHTML = "Fall 2018";
-						//document.write("<h1>hola</h1>");
-						//x = x-1;
-						//}
-					//document.close();
-					//}
-			}
-			
-      </script>
-      
+    <link rel="stylesheet" href="dragDropScheduler.css">
+    <script src="dragDropScheduler.js"></script>
    </head>
    <body>
 		<div style="color:#3366ff;font-family:arial;" align="center">
 		<h3>Course Planner - Pijamajammers</h3>
-		
-		
-		
-		
+
 		<h5> Semester Generator </h5>
 		<form>
 		Starting Year:
@@ -147,30 +16,30 @@
 		<input type="text" id="last" value="">
 		<button onclick="h()">GO</button>
 		</form>
-		
-		
+
+
 	<div id="above">
 		<div id="Required" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><Required>Required Courses- Hover for Course Description</Required>
-			<div id="Math125" draggable="true" ondragstart="drag(event)" title = "Calc 1"><class>Math 125</class></div>
-			<div id="Chem150" draggable="true" ondragstart="drag(event)" title = "Chemistry for Engineers"><class>Chem 150</class></div>
+			<div id="MATH125" draggable="true" ondragstart="drag(event)" title = "Calc 1"><class>MATH 125</class></div>
+			<div id="CHEM150" draggable="true" ondragstart="drag(event)" title = "CHEMistry for Engineers"><class>CHEM 150</class></div>
 			<div id="AE245" draggable="true" ondragstart="drag(event)" title = "Intro to Aero"><class>AE 245</class></div>
 			<div id="KUCore1" draggable="true" ondragstart="drag(event)" title = "GE 2.1"><class>KU Core 1</class></div>
-			<div id="Math126" draggable="true" ondragstart="drag(event)" title = "Calc II"><class>Math 126</class></div>
+			<div id="MATH126" draggable="true" ondragstart="drag(event)" title = "Calc II"><class>MATH 126</class></div>
 			<div id="KUCore2" draggable="true" ondragstart="drag(event)" title = "GE 2.1"><class>KU Core 2</class></div>
 			<div id="PHSX210" draggable="true" ondragstart="drag(event)" title = "Physics I + lab"><class>PHSX 210/216</class></div>
 			<div id="AE211" draggable="true" ondragstart="drag(event)" title = "Computing for Engineers"><class>AE 211</class></div>
 			<div id="KUCore3" draggable="true" ondragstart="drag(event)" title = "GE 3H"><class>KU Core 3</class></div>
-			<div id="Math220" draggable="true" ondragstart="drag(event)" title = "Applied Differential Equations"><class>Math 220</class></div>
+			<div id="MATH220" draggable="true" ondragstart="drag(event)" title = "Applied Differential Equations"><class>MATH 220</class></div>
 			<div id="CE301" draggable="true" ondragstart="drag(event)" title = "Statics and Dynamics"><class>CE 301</class></div>
 			<div id="PHSX212" draggable="true" ondragstart="drag(event)" title = "Physics II + lab"><class>PHSX 212/236</class></div>
 			<div id="AE345" draggable="true" ondragstart="drag(event)" title = "Fluid Dynamics"><class>AE 345</class></div>
 			<div id="KUCore4" draggable="true" ondragstart="drag(event)" title = "ECON"><class>KU Core 4</class></div>
-			<div id="Math127" draggable="true" ondragstart="drag(event)" title = "Calc III"><class>Math 127</class></div>
+			<div id="MATH127" draggable="true" ondragstart="drag(event)" title = "Calc III"><class>MATH 127</class></div>
 			<div id="CE310" draggable="true" ondragstart="drag(event)" title = "Strength of Materials"><class>CE 310</class></div>
 			<div id="AE260" draggable="true" ondragstart="drag(event)" title = "Intro to Astronautics"><class>AE 360</class></div>
 			<div id="AE445" draggable="true" ondragstart="drag(event)" title = "Aerodynamics & Performance"><class>AE 445</class></div>
 			<div id="ME312" draggable="true" ondragstart="drag(event)" title = "Thermodynamics"><class>ME 312</class></div>
-			<div id="Math290" draggable="true" ondragstart="drag(event)" title = "Elementary Linear Algebra"><class>Math 290</class></div>
+			<div id="MATH290" draggable="true" ondragstart="drag(event)" title = "Elementary Linear Algebra"><class>MATH 290</class></div>
 			<div id="AE550" draggable="true" ondragstart="drag(event)" title = "Dynamics of Flight I"><class>AE 550</class></div>
 			<div id="AE571" draggable="true" ondragstart="drag(event)" title = "Rep. Propulsion"><class>AE 571</class></div>
 			<div id="AE507" draggable="true" ondragstart="drag(event)" title = "Aero. Structures I"><class>AE 507</class></div>
@@ -213,6 +82,6 @@
 		<p></p>
 		</div>
 	</div>
-		
+
    </body>
 </html>
