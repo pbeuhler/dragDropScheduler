@@ -26,8 +26,6 @@ function drop(ev) {
   ev.preventDefault();
   var data = ev.dataTransfer.getData("text");
   ev.target.appendChild(document.getElementById(data));
-  var test = getValue('Name',"AE430")
-  alert(test);
 }
 
 function getValue(colVal, id) {
