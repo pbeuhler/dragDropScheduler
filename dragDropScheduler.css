@@ -75,24 +75,24 @@
 
   .title
   {
-    background-color:#3366ff; 
+    background-color:#3366ff;
     text-align:center;
     color:white;
     padding: 2px 0px;
   }
 
 
-  #above 
+  #above
   {
     height:1000px;
   }
 
-  #InformationBlock 
+  #InformationBlock
   {
     float: left;
     width: 1100px;
     height: 200px;
     margin: 10px;
     padding: 10px;
-  }			
+  }
 }
