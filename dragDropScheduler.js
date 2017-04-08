@@ -43,7 +43,6 @@ function drop(ev) {
   ev.target.appendChild(document.getElementById(data));
   var prereqsMet = checkPrerequisitesMet(document.getElementById(data).id);
   var semesterRight = checkSemesters(document.getElementById(data).id);
-  console.log(semesterRight);
 }
 
 function getValue(colVal, id) {
