@@ -51,6 +51,11 @@ function getValue(colVal, id) {
 }
 
 function checkSemesters(courseID) {
+  for (i in notInDatabase) {
+    if (courseID == notInDatabase[i]) {
+      return true;
+    }
+  }
   //returns false if the course is not offered in the attempted semester, true otherwise
   var semestersOffered = getValue('Semesters', courseID);
   var curSemester = document.getElementById(courseID).parentNode.id;
