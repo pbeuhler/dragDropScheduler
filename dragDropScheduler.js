@@ -235,17 +235,6 @@ function h(){
   }
   else {
     var newStr = '';
-    for (i in semestersArray) {
-      console.lo
-      // if (i%2 == 0) {
-      //   newStr = "Fall " + (start + start%2);
-      //   semesterArray[i].innerHTML = newStr;
-      // }
-      // else {
-      //   newStr = "Spring " + (start + start%2);
-      //   semesterArray[i].innerHTML = newStr;
-      // }
-    }
   }
  //else{
    //var x = (end - start)*2;
