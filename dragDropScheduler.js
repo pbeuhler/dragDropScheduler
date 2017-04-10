@@ -34,9 +34,11 @@ function allowDrop(ev) {
   ev.preventDefault();
   //info();
 }
-  function drag(ev) {
+
+function drag(ev) {
   ev.dataTransfer.setData("text", ev.target.id);
 }
+
 function drop(ev) {
   ev.preventDefault();
   var data = ev.dataTransfer.getData("text");
@@ -44,12 +46,24 @@ function drop(ev) {
   var prereqsMet = checkPrerequisitesMet(document.getElementById(data).id);
   var coreqsMet = checkCorequisitesMet(document.getElementById(data).id);
   var semesterRight = checkSemesters(document.getElementById(data).id);
+  var credits = getCreditsSemester(ev.target.id);
 
   console.log(document.getElementById(data).id);
   console.log(prereqsMet);
   console.log(coreqsMet);
   console.log(semesterRight);
+  console.log(credits);
   console.log("-------------------------");
+}
+
+function getCreditsSemester(divID) {
+  var semesterCourses = getChildren(divID);
+  console.log(semesterCourses);
+  var totalCredits = 0;
+  for (i in semesterCourses) {
+    totalCredits += parseInt(getValue('Credits', semesterCourses[i]));
+  }
+  return totalCredits;
 }
 
 function getValue(colVal, id) {
@@ -101,7 +115,7 @@ function checkCorequisitesMet(courseID) {
   }
   var coreqArray = [corequisites];
   if (corequisites.indexOf('+') > -1) {
-    coreqArray = coreqArray.split('+');
+    coreqArray = corequisites.split('+');
   }
 
   var coreqMetFlag = false;
