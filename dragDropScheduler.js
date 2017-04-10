@@ -1,6 +1,6 @@
 var lotInfoDB;
 var oReq = new XMLHttpRequest();
-oReq.open("GET", "./448.db", true);
+oReq.open("GET", "https://people.eecs.ku.edu/~jfreeman67/448.db", true);
 oReq.responseType = "arraybuffer";
 oReq.onload = function(e) {
   var uInt8Array = new Uint8Array(this.response);
@@ -8,7 +8,7 @@ oReq.onload = function(e) {
 };
 oReq.send();
 
-var semestersArray = ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8'];
+var semestersArray = ['Prereqs', 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8'];
 var notInDatabase = ['KUCore1', 'KUCore2', 'KUCore3', 'KUCore4', 'Tech1', 'KUCore5', 'Tech2', 'Tech3', 'KUCore6'];
 
 function getChildren(divID) {
@@ -47,7 +47,7 @@ function drop(ev) {
   var coreqsMet = checkCorequisitesMet(document.getElementById(data).id);
   var semesterRight = checkSemesters(document.getElementById(data).id);
   var credits = getCreditsSemester(ev.target.id);
-
+  Info.innerHTML = getValue('Description',document.getElementById(data).id);
   console.log(document.getElementById(data).id);
   console.log(prereqsMet);
   console.log(coreqsMet);
@@ -58,7 +58,6 @@ function drop(ev) {
 
 function getCreditsSemester(divID) {
   var semesterCourses = getChildren(divID);
-  console.log(semesterCourses);
   var totalCredits = 0;
   for (i in semesterCourses) {
     totalCredits += parseInt(getValue('Credits', semesterCourses[i]));
@@ -233,6 +232,20 @@ function h(){
 
   if(start > end || start < 2014){
     alert("Incorrect inputs in Semester Generator section");
+  }
+  else {
+    var newStr = '';
+    for (i in semestersArray) {
+      console.lo
+      // if (i%2 == 0) {
+      //   newStr = "Fall " + (start + start%2);
+      //   semesterArray[i].innerHTML = newStr;
+      // }
+      // else {
+      //   newStr = "Spring " + (start + start%2);
+      //   semesterArray[i].innerHTML = newStr;
+      // }
+    }
   }
  //else{
    //var x = (end - start)*2;
