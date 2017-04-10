@@ -42,7 +42,14 @@ function drop(ev) {
   var data = ev.dataTransfer.getData("text");
   ev.target.appendChild(document.getElementById(data));
   var prereqsMet = checkPrerequisitesMet(document.getElementById(data).id);
+  var coreqsMet = checkCorequisitesMet(document.getElementById(data).id);
   var semesterRight = checkSemesters(document.getElementById(data).id);
+
+  console.log(document.getElementById(data).id);
+  console.log(prereqsMet);
+  console.log(coreqsMet);
+  console.log(semesterRight);
+  console.log("-------------------------");
 }
 
 function getValue(colVal, id) {
@@ -51,6 +58,11 @@ function getValue(colVal, id) {
 }
 
 function checkSemesters(courseID) {
+  for (i in notInDatabase) {
+    if (courseID == notInDatabase[i]) {
+      return true;
+    }
+  }
   //returns false if the course is not offered in the attempted semester, true otherwise
   var semestersOffered = getValue('Semesters', courseID);
   var curSemester = document.getElementById(courseID).parentNode.id;
@@ -75,10 +87,7 @@ function checkSemesters(courseID) {
   }
 }
 
-function checkPrerequisitesMet(courseID) {
-  //Only works if course div is in its semester to be checked
-  //Returns false if the pre/co reqs are not med and true if they are
-  //several lazy shortcuts so if the database is updated we'll need to go through this again
+function checkCorequisitesMet(courseID) {
   for (i in notInDatabase) {
     if (courseID == notInDatabase[i]) {
       return true;
@@ -86,17 +95,15 @@ function checkPrerequisitesMet(courseID) {
   }
 
   var corequisites = getValue('Corequisites', courseID);
-  var prerequisites = getValue('Prerequisites', courseID);
   var curSemester = document.getElementById(courseID).parentNode.id;
-
-  if (corequisites == '-' && prerequisites == '-') {
+  if (corequisites == '-') {
     return true;
   }
-
-  var coreqArray = corequisites.split('+');
-  if (coreqArray == []) {
-    coreqArray = [corequisites];
+  var coreqArray = [corequisites];
+  if (corequisites.indexOf('+') > -1) {
+    coreqArray = coreqArray.split('+');
   }
+
   var coreqMetFlag = false;
   var semesterCourses = [];
   for (i in coreqArray) {
@@ -109,13 +116,35 @@ function checkPrerequisitesMet(courseID) {
         for (l in coreqArray) {
           if (coreqArray[l] == semesterCourses[k]) {
             coreqMetFlag = true;
+            return true;
           }
         }
       }
     }
   }
-  if (corequisites == '-') {
-    coreqMetFlag = true;
+  if (coreqMetFlag == false) {
+    return coreqArray;
+  }
+  else {
+    return true;
+  }
+}
+
+function checkPrerequisitesMet(courseID) {
+  //Only works if course div is in its semester to be checked
+  //Returns a 2d array of prerequisites/corequisites if not met
+  //several lazy shortcuts so if the database is updated we'll need to go through this again
+  for (i in notInDatabase) {
+    if (courseID == notInDatabase[i]) {
+      return true;
+    }
+  }
+
+  var prerequisites = getValue('Prerequisites', courseID);
+  var curSemester = document.getElementById(courseID).parentNode.id;
+
+  if (prerequisites == '-') {
+    return true;
   }
 
   var prereqType = '';
@@ -143,7 +172,7 @@ function checkPrerequisitesMet(courseID) {
       semesterCourses = getChildren(semestersArray[j]);
       for (k in semesterCourses) {
         if (prereqArray[i] == semesterCourses[k]) {
-          metArray.push(true);
+          metArray.push(semesterCourses[k]);
           orFlag = true;
         }
       }
@@ -163,11 +192,24 @@ function checkPrerequisitesMet(courseID) {
   if (prerequisites == '-') {
     prereqMetFlag = true;
   }
-  if (coreqMetFlag && prereqMetFlag) {
+  if (prereqMetFlag) {
     return true;
   }
   else {
-    return false;
+    var notMetArray = [];
+    var metFlag = false;
+    for (i in prereqArray) {
+      metFlag = false;
+      for (j in metArray) {
+        if (prereqArray[i] == metArray[j]) {
+          metFlag = true;
+        }
+      }
+      if (metFlag == false) {
+        notMetArray.push(prereqArray[i]);
+      }
+    }
+    return notMetArray;
   }
 }
 
