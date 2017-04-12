@@ -9,6 +9,7 @@ oReq.onload = function(e) {
 oReq.send();
 
 var semestersArray = ['Prereqs', 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8'];
+var dropArr = ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8'];
 var notInDatabase = ['KUCore1', 'KUCore2', 'KUCore3', 'KUCore4', 'Tech1', 'KUCore5', 'Tech2', 'Tech3', 'KUCore6'];
 
 function getChildren(divID) {
@@ -42,19 +43,62 @@ function drag(ev) {
 function drop(ev) {
   ev.preventDefault();
   var data = ev.dataTransfer.getData("text");
-  ev.target.appendChild(document.getElementById(data));
-  var prereqsMet = checkPrerequisitesMet(document.getElementById(data).id);
-  var coreqsMet = checkCorequisitesMet(document.getElementById(data).id);
-  var semesterRight = checkSemesters(document.getElementById(data).id);
-  var credits = getCreditsSemester(ev.target.id);
-  Info.innerHTML = getValue('Description',document.getElementById(data).id);
-  console.log(document.getElementById(data).id);
-  console.log(prereqsMet);
-  console.log(coreqsMet);
-  console.log(semesterRight);
-  console.log(credits);
+  
+  //if target is valid, it is in the semester array, then diff will be < 8
+  var diff = 0;
+  for(i in dropArr){
+	  if(ev.target.id != dropArr[i]){
+		  diff++;  
+	  }
+  }
+  if(diff < 8){
+	    ev.target.appendChild(document.getElementById(data));
+		var prereqsMet = checkPrerequisitesMet(document.getElementById(data).id);
+		var coreqsMet = checkCorequisitesMet(document.getElementById(data).id);
+		var semesterRight = checkSemesters(document.getElementById(data).id);
+		var credits = getCreditsSemester(ev.target.id);
+		Info.innerHTML = getValue('Description',document.getElementById(data).id);
+		
+		console.log(document.getElementById(data).id);
+		console.log(prereqsMet);
+		console.log(coreqsMet);
+		console.log(semesterRight);
+		console.log(credits);
+		
+			//if prerequisite array non empty then conflict
+			//red course // prereqs pink
+		    if(Array.isArray(prereqsMet)){
+				//course, array
+				pre(data, prereqsMet);
+			}
+  }
+
+
+
+  // else if(!semesterRight){
+  //   sem(data);
+  /* // }
+  if(!coreqsMet){
+    cor(data);
+  } */
   console.log("-------------------------");
 }
+
+//color
+function pre(ev, array){
+  document.getElementById(ev).style = "background:red";
+  for(i in array){
+	  document.getElementById(array).style = "background:pink";
+  }
+}
+function cor(ev){
+  document.getElementById(ev).style = "background:yellow";
+}
+function sem(ev){
+  document.getElementById(ev).style = "background:pink";
+}
+
+
 
 function getCreditsSemester(divID) {
   var semesterCourses = getChildren(divID);
