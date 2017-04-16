@@ -11,6 +11,11 @@ oReq.send();
 var semestersArray = ['Prereqs', 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8'];
 var dropArr = ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8'];
 var notInDatabase = ['KUCore1', 'KUCore2', 'KUCore3', 'KUCore4', 'Tech1', 'KUCore5', 'Tech2', 'Tech3', 'KUCore6'];
+var Used = [];
+var preReq = [];
+var num_drops;
+
+		
 
 function getChildren(divID) {
   var div = document.getElementById(divID);
@@ -37,10 +42,32 @@ function allowDrop(ev) {
 }
 
 function drag(ev) {
+	dragStart(ev);
   ev.dataTransfer.setData("text", ev.target.id);
 }
 
-function drop(ev) {
+function Position(data,target,rank){
+	this.course_id = data;
+	this.target = target;
+	this.rank = rank;
+	
+	//refresh course position
+	this.refresh = function(num_drops){
+		for(i in Used){
+				var a = this.course_id;
+				var b = Used[i].course_id;
+				//same id tag
+				if(a == b && i<Used.length-1){
+					this.course = Used[i].course_id;
+					this.rank = num_drops;
+					var ind = Used.indexOf(Used[i]);
+					Used.splice(num_drops-1,1);
+				}
+			}
+	}
+}
+
+function drop(ev) {	
   ev.preventDefault();
   var data = ev.dataTransfer.getData("text");
   
@@ -52,25 +79,34 @@ function drop(ev) {
 	  }
   }
   if(diff < 8){
+	  
+
+		//succesful drop
+		num_drops = num_drops+1;
 	    ev.target.appendChild(document.getElementById(data));
 		var prereqsMet = checkPrerequisitesMet(document.getElementById(data).id);
 		var coreqsMet = checkCorequisitesMet(document.getElementById(data).id);
 		var semesterRight = checkSemesters(document.getElementById(data).id);
 		var credits = getCreditsSemester(ev.target.id);
-		Info.innerHTML = getValue('Description',document.getElementById(data).id);
+		//Info.innerHTML = getValue('Description',document.getElementById(data).id);
 		
-		console.log(document.getElementById(data).id);
-		console.log(prereqsMet);
-		console.log(coreqsMet);
-		console.log(semesterRight);
-		console.log(credits);
-		
-			//if prerequisite array non empty then conflict
-			//red course // prereqs pink
-		    if(Array.isArray(prereqsMet)){
-				//course, array
-				pre(data, prereqsMet);
-			}
+		//console.log(document.getElementById(data).id);
+		//console.log(prereqsMet);
+		//console.log(coreqsMet);
+		//console.log(semesterRight);
+		//console.log(credits);
+		var id = document.getElementById(data).id;
+
+			
+			
+				//generates position
+				var y = new Position(id, ev.target.id,num_drops);
+				Used.push(y);
+				num_drops = num_drops+1;
+				//refresh all coruses location // substitute old location
+				y.refresh(num_drops);
+				pre(y,prereqsMet);	
+			
   }
 
 
@@ -81,16 +117,60 @@ function drop(ev) {
   if(!coreqsMet){
     cor(data);
   } */
-  console.log("-------------------------");
-}
+  //console.log(Used);
+  console.log("-------");
+}//end drop
 
 //color
-function pre(ev, array){
-  document.getElementById(ev).style = "background:red";
-  for(i in array){
-	  document.getElementById(array).style = "background:pink";
+function pre(obj, array){
+
+var no_conflict = true;
+	//console.log(array);
+  if(array[0] != ""){
+	  for(i in array){
+		for(j in Used){
+			//if prerequisite is in droped array
+			//if(Used[j].course_id == array[i].course_id){
+				//look placed before
+				//string comparison
+				console.log("loc" + (Used[j].course_id));
+				console.log("loc" + (obj.course_id));
+				if((Used[j].target >= obj.target) ||(obj.course_id == preReq[i][1]) ||(preReq.indexOf(Used[j]) != -1)){
+					//source
+					document.getElementById(obj.course_id).style = "background:red";
+					////prerequisite
+					document.getElementById(array[i]).style = "background:pink";
+					//object being moved
+				    console.log("pass");
+					//prerequisite
+					preReq.push([obj,array[i],Used[j].target]);
+			//	}
+			}
+		}
+	  }
+	  
+	  
+	  for(i in preReq){
+		  //course dragged is in conflict
+		  //dropped before course that requires it
+		  console.log("Requirements");
+		//console.log(preReq[i][0]);
+		//console.log(obj.course_id);
+		  //console.log((array[i] == object.target) && (obj.target < preReq[i][0]));
+		if((preReq[i][1] == obj.course_id) && (obj.target < preReq[i][0].target )){
+		//prerequisite
+		console.log("change white");
+		document.getElementById(preReq[i][0].course_id).style = "background:white";
+		//source 
+		document.getElementById(obj.course_id).style = "background:white";
+		
+			//var ind = preReq.indexOf(preReq[i][0]);
+			//preReq.splice(ind,1);
+		}
+	  }
   }
-}
+  
+}//end
 function cor(ev){
   document.getElementById(ev).style = "background:yellow";
 }
