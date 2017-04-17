@@ -15,7 +15,7 @@ var Used = [];
 var preReq = [];
 var num_drops;
 
-		
+
 
 function getChildren(divID) {
   var div = document.getElementById(divID);
@@ -46,11 +46,16 @@ function drag(ev) {
   ev.dataTransfer.setData("text", ev.target.id);
 }
 
+function hover(ev) {
+	dragStart(ev);
+  ev.dataTransfer.setData("text", ev.target.id);
+}
+
 function Position(data,target,rank){
 	this.course_id = data;
 	this.target = target;
 	this.rank = rank;
-	
+
 	//refresh course position
 	this.refresh = function(num_drops){
 		for(i in Used){
@@ -67,19 +72,19 @@ function Position(data,target,rank){
 	}
 }
 
-function drop(ev) {	
+function drop(ev) {
   ev.preventDefault();
   var data = ev.dataTransfer.getData("text");
-  
+
   //if target is valid, it is in the semester array, then diff will be < 8
   var diff = 0;
   for(i in dropArr){
 	  if(ev.target.id != dropArr[i]){
-		  diff++;  
+		  diff++;
 	  }
   }
   if(diff < 8){
-	  
+
 
 		//succesful drop
 		num_drops = num_drops+1;
@@ -89,7 +94,7 @@ function drop(ev) {
 		var semesterRight = checkSemesters(document.getElementById(data).id);
 		var credits = getCreditsSemester(ev.target.id);
 		//Info.innerHTML = getValue('Description',document.getElementById(data).id);
-		
+
 		//console.log(document.getElementById(data).id);
 		//console.log(prereqsMet);
 		//console.log(coreqsMet);
@@ -97,16 +102,16 @@ function drop(ev) {
 		//console.log(credits);
 		var id = document.getElementById(data).id;
 
-			
-			
+
+
 				//generates position
 				var y = new Position(id, ev.target.id,num_drops);
 				Used.push(y);
 				num_drops = num_drops+1;
 				//refresh all coruses location // substitute old location
 				y.refresh(num_drops);
-				pre(y,prereqsMet);	
-			
+				pre(y,prereqsMet);
+
   }
 
 
@@ -148,8 +153,8 @@ var no_conflict = true;
 			}
 		}
 	  }
-	  
-	  
+
+
 	  for(i in preReq){
 		  //course dragged is in conflict
 		  //dropped before course that requires it
@@ -161,15 +166,15 @@ var no_conflict = true;
 		//prerequisite
 		console.log("change white");
 		document.getElementById(preReq[i][0].course_id).style = "background:white";
-		//source 
+		//source
 		document.getElementById(obj.course_id).style = "background:white";
-		
+
 			//var ind = preReq.indexOf(preReq[i][0]);
 			//preReq.splice(ind,1);
 		}
 	  }
   }
-  
+
 }//end
 function cor(ev){
   document.getElementById(ev).style = "background:yellow";
