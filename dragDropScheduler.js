@@ -33,7 +33,7 @@ function dragStart(ev) {
    ev.dataTransfer.effectAllowed='move';
    ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
    ev.dataTransfer.setDragImage(ev.target,0,0);
-   return true;
+
 }
 
 function allowDrop(ev) {
@@ -42,8 +42,47 @@ function allowDrop(ev) {
 }
 
 function hover(ev) {
-  divId = ev.getAttribute('id')
+  divId = ev.getAttribute('id');
+  for (i in notInDatabase) {
+    if (divId == notInDatabase[i]) {
+      document.getElementById(divId).style = "background:PaleGreen";
+      return true;
+    }
+  }
   Info.innerHTML = getValue('Name',divId) + "<br />" + getValue('Description',divId);
+  if (checkPrerequisitesMet(divId) == true) {
+    document.getElementById(divId).style = "background:PaleGreen";
+  }
+  else {
+    document.getElementById(divId).style = "background:IndianRed";
+    notMetPreArray = checkPrerequisitesMet(divId);
+    notMetCoArray = checkCorequisitesMet(divId);
+    for (i in notMetCoArray) {
+      document.getElementById(notMetCoArray[i]).style = "background:Wheat";
+    }
+    for (i in notMetPreArray) {
+      document.getElementById(notMetPreArray[i]).style = "background:Pink";
+    }
+  }
+}
+
+function leave(ev) {
+  divId = ev.getAttribute('id');
+  for (i in notInDatabase) {
+    if (divId == notInDatabase[i]) {
+      document.getElementById(divId).style = "background:white";
+      return true;
+    }
+  }
+  document.getElementById(divId).style = "background:white";
+  notMetPreArray = checkPrerequisitesMet(divId);
+  notMetCoArray = checkCorequisitesMet(divId);
+  for (i in notMetCoArray) {
+    document.getElementById(notMetCoArray[i]).style = "background:white";
+  }
+  for (i in notMetPreArray) {
+    document.getElementById(notMetPreArray[i]).style = "background:white";
+  }
 }
 
 function drag(ev) {
@@ -89,6 +128,7 @@ function drop(ev) {
   ev.preventDefault();
   var data = ev.dataTransfer.getData("text");
 
+
   //if target is valid, it is in the semester array, then diff will be < 8
   var diff = 0;
   for(i in dropArr){
@@ -106,6 +146,17 @@ function drop(ev) {
 		var coreqsMet = checkCorequisitesMet(document.getElementById(data).id);
 		var semesterRight = checkSemesters(document.getElementById(data).id);
 		var credits = getCreditsSemester(ev.target.id);
+    document.getElementById(data).style = "background:white";
+    // if (prereqsMet != true) {
+    //   for (i in range prereqsMet) {
+    //     document.getElementById(prereqsMet[i]).style = "background:white";
+    //   }
+    // }
+    // if (coreqsMet != true) {
+    //   for (i in range coreqsMet) {
+    //     document.getElementById(coreqsMet[i]).style = "background:white";
+    //   }
+    // }
 		//Info.innerHTML = getValue('Description',document.getElementById(data).id);
 
 		//console.log(document.getElementById(data).id);
@@ -125,7 +176,7 @@ function drop(ev) {
 				//refresh all coruses location // substitute old location
 				y.refresh(num_drops);
 				//object with prerequisite and its prerequisites
-				pre(y,prereqsMet);
+				// pre(y,prereqsMet);
 				//console.log(prereqsMet);
 
   }
