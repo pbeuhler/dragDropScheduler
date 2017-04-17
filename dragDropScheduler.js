@@ -41,6 +41,11 @@ function allowDrop(ev) {
   //info();
 }
 
+function hover(ev) {
+  divId = ev.getAttribute('id')
+  Info.innerHTML = getValue('Name',divId) + "<br />" + getValue('Description',divId);
+}
+
 function drag(ev) {
 	dragStart(ev);
   ev.dataTransfer.setData("text", ev.target.id);
@@ -96,7 +101,7 @@ function drop(ev) {
 
 		//succesful drop
 		num_drops = num_drops+1;
-	    ev.target.appendChild(document.getElementById(data));
+	  ev.target.appendChild(document.getElementById(data));
 		var prereqsMet = checkPrerequisitesMet(document.getElementById(data).id);
 		var coreqsMet = checkCorequisitesMet(document.getElementById(data).id);
 		var semesterRight = checkSemesters(document.getElementById(data).id);
@@ -146,6 +151,7 @@ function pre(obj, array){
 					document.getElementById(array[i]).style = "background:pink";
 					preReq.push([obj, array[i]]);
 				}
+
 				else if((Used[j].course_id == array[i]) && Used[j].target >= obj.target){
 					pre = Used[j].course_id;
 					console.log("white2");
