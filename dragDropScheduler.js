@@ -42,11 +42,21 @@ function allowDrop(ev) {
 }
 
 function hover(ev) {
-  // document.getElementById('s1').title="hello";
   var x = document.querySelectorAll("*[draggable=true]");
   for (i in x) {
-    x[i].style = "background:white";
+    if (((typeof x[i]) == 'object') && (x[i].parentNode.id == 'Required')) {
+      x[i].style = "background:white";
+    }
+    else if ((typeof x[i]) == 'object') {
+      if (x[i].style.background != 'IndianRed') {
+        x[i].style = "background:white";
+      }
+      else if ((checkPrerequisitesMet(x[i].id) == true) && (checkCorequisitesMet(x[i].id) == true)) {
+         x[i].style = "background:white";
+       }
+    }
   }
+
   divId = ev.getAttribute('id');
   for (i in notInDatabase) {
     if (divId == notInDatabase[i]) {
@@ -67,10 +77,14 @@ function hover(ev) {
       return true;
     }
     for (i in notMetCoArray) {
-      document.getElementById(notMetCoArray[i]).style = "background:Wheat";
+      if (document.getElementById(notMetCoArray[i]).style.background != 'indianred') {
+        document.getElementById(notMetCoArray[i]).style = "background:Wheat";
+      }
     }
     for (i in notMetPreArray) {
-      document.getElementById(notMetPreArray[i]).style = "background:Pink";
+      if (document.getElementById(notMetPreArray[i]).style.background != 'indianred') {
+        document.getElementById(notMetPreArray[i]).style = "background:Pink";
+      }
     }
   }
 }
@@ -141,166 +155,17 @@ function drop(ev) {
   ev.preventDefault();
   var data = ev.dataTransfer.getData("text");
 
-
-  //if target is valid, it is in the semester array, then diff will be < 8
-  var diff = 0;
-  for(i in dropArr){
-	  if(ev.target.id != dropArr[i]){
-		  diff++;
-	  }
-  }
-  if(diff < 8){
-
-
-		//succesful drop
-		num_drops = num_drops+1;
-	  ev.target.appendChild(document.getElementById(data));
-		var prereqsMet = checkPrerequisitesMet(document.getElementById(data).id);
-		var coreqsMet = checkCorequisitesMet(document.getElementById(data).id);
-		var semesterRight = checkSemesters(document.getElementById(data).id);
-		var credits = getCreditsSemester(ev.target.id);
-    // if (prereqsMet != true) {
-    //   for (i in range prereqsMet) {
-    //     document.getElementById(prereqsMet[i]).style = "background:white";
-    //   }
-    // }
-    // if (coreqsMet != true) {
-    //   for (i in range coreqsMet) {
-    //     document.getElementById(coreqsMet[i]).style = "background:white";
-    //   }
-    // }
-		//Info.innerHTML = getValue('Description',document.getElementById(data).id);
-
-		//console.log(document.getElementById(data).id);
-		//console.log(prereqsMet);
-		//console.log(coreqsMet);
-		//console.log(semesterRight);
-		//console.log(credits);
-		var id = document.getElementById(data).id;
-
-
-
-				//generates position
-				// var y = new Position(id, ev.target.id,num_drops);
-				// Used.push(y);
-				// console.log(y.course_id);
-				// num_drops = num_drops+1;
-				//refresh all coruses location // substitute old location
-				// y.refresh(num_drops);
-				//object with prerequisite and its prerequisites
-				// pre(y,prereqsMet);
-				//console.log(prereqsMet);
-
-  }
-  console.log("-------");
-}//end drop
-
-//color
-function pre(obj, array){
-	var pre;
-	var sor;
-  if(preReq[0] != ""){
-	  for(i in array){
-		for(j in Used){
-				//obtain prerequisite through Used array
-				//verify prerequisite instance is in invalid position
-
-				if((Used[j].course_id != array[i]) && Used[j].target >= obj.target){
-					sor = Used[j].course_id;
-					console.log("white2");
-					//source
-					document.getElementById(obj.course_id).style = "background:red";
-					////prerequisite
-					document.getElementById(array[i]).style = "background:pink";
-					preReq.push([obj, array[i]]);
-				}
-
-				else if((Used[j].course_id == array[i]) && Used[j].target >= obj.target){
-					pre = Used[j].course_id;
-					console.log("white2");
-					//source
-					document.getElementById(obj.course_id).style = "background:red";
-					////prerequisite
-					document.getElementById(array[i]).style = "background:pink";
-					preReq.push([obj, array[i]]);
-				}
-
-
-			//	}
-			}
-		}
-
-
-	  //refresh prereq array
-	  var x =0;
-	  var h = 0;
-		while(obj.course_id != array[x] && x<preReq.length){
-			console.log(preReq.length)
-			var a = obj.target;
-				//same id tag
-				if(preReq[x][0].course_id == obj.course_id){
-					if(h==0){
-					preReq[x][0].target = obj.target;
-					h++;
-					}
-					else{
-						preReq.splice(x,1);
-					}
-				}
-			x++;
-		}
-		//console.log(preReq.length);
-	  //look how many conflicts current drop solved
-	  for(i in preReq){
-		 //console.log(i);
-		//ideal courses' conditions
-		//source -> preReq[i][0]
-		//prerequisite -> preReq[i][1]
-		//if either source or prerequisite is being moved check relative position
-
-		//if prerequiste is object beg moved
-		console.log(preReq[i][0],preReq[i][1])
-		if((preReq[i][1] == obj.course_id && preReq[i][0].target > obj.target )){
-		//prerequisite
-		console.log("change white");
-		document.getElementById(preReq[i][0].course_id).style = "background:white";
-		//source
-		document.getElementById(preReq[i][1]).style = "background:white";
-
-		var ind = preReq.indexOf([preReq[i][0],preReq[i][1]]);
-		preReq.splice(ind, 1);
-		}
-
-    var req = find_in_Used(preReq[i][1]);
-		if( preReq[i][0].course_id == obj.course_id && preReq[i][0].target > req.target ){
-      console.log("change white");
-  		document.getElementById(preReq[i][0].course_id).style = "background:white";
-  		//source
-  		document.getElementById(preReq[i][1]).style = "background:white";
-
-  		var ind = preReq.indexOf([preReq[i][0],preReq[i][1]]);
-  		preReq.splice(ind, 1);
-    }
-
-	  }
-  }
-
-}//end pre()
-
-function find_in_Used(name){
-  for(i in Used){
-    if(Used[i].course_id == name){
-      return Used[i];
-    }
-  }
+	 ev.target.appendChild(document.getElementById(data));
+	var prereqsMet = checkPrerequisitesMet(document.getElementById(data).id);
+	var coreqsMet = checkCorequisitesMet(document.getElementById(data).id);
+	var semesterRight = checkSemesters(document.getElementById(data).id);
+	var credits = getCreditsSemester(ev.target.id);
+  var curSemester = document.getElementById(data).parentNode.children[0].innerHTML;
+  console.log(document.getElementById(data).id);
+  console.log("coreqs: " + coreqsMet);
+  console.log("prereqs: " + prereqsMet);
+  console.log("------------------");
 }
-function cor(ev){
-  document.getElementById(ev).style = "background:yellow";
-}
-function sem(ev){
-  document.getElementById(ev).style = "background:pink";
-}
-
 
 
 function getCreditsSemester(divID) {
@@ -367,6 +232,9 @@ function checkCorequisitesMet(courseID) {
 
   var corequisites = getValue('Corequisites', courseID);
   var curSemester = document.getElementById(courseID).parentNode.id;
+  if (curSemester == 'Required') {
+    curSemester = 's8';
+  }
   if (corequisites == '-') {
     return true;
   }
@@ -413,7 +281,9 @@ function checkPrerequisitesMet(courseID) {
 
   var prerequisites = getValue('Prerequisites', courseID);
   var curSemester = document.getElementById(courseID).parentNode.id;
-
+  if (curSemester == 'Required') {
+    curSemester = 's8';
+  }
   if (prerequisites == '-') {
     return true;
   }
