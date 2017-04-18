@@ -1,6 +1,6 @@
 var lotInfoDB;
 var oReq = new XMLHttpRequest();
-oReq.open("GET", "https://people.eecs.ku.edu/~jfreeman67/448.db", true);
+oReq.open("GET", "https://people.eecs.ku.edu/~jfreeman67/Lab5/448.db", true);
 oReq.responseType = "arraybuffer";
 oReq.onload = function(e) {
   var uInt8Array = new Uint8Array(this.response);
@@ -42,6 +42,7 @@ function allowDrop(ev) {
 }
 
 function hover(ev) {
+  // document.getElementById('s1').title="hello";
   var x = document.querySelectorAll("*[draggable=true]");
   for (i in x) {
     x[i].style = "background:white";
@@ -180,12 +181,12 @@ function drop(ev) {
 
 
 				//generates position
-				var y = new Position(id, ev.target.id,num_drops);
-				Used.push(y);
-				console.log(y.course_id);
-				num_drops = num_drops+1;
+				// var y = new Position(id, ev.target.id,num_drops);
+				// Used.push(y);
+				// console.log(y.course_id);
+				// num_drops = num_drops+1;
 				//refresh all coruses location // substitute old location
-				y.refresh(num_drops);
+				// y.refresh(num_drops);
 				//object with prerequisite and its prerequisites
 				// pre(y,prereqsMet);
 				//console.log(prereqsMet);
@@ -306,14 +307,25 @@ function getCreditsSemester(divID) {
   var semesterCourses = getChildren(divID);
   var totalCredits = 0;
   for (i in semesterCourses) {
-    totalCredits += parseInt(getValue('Credits', semesterCourses[i]));
+    if (getValue('Credits', semesterCourses[i]) == null) {
+      totalCredits += 3;
+    }
+    else {
+      totalCredits += parseInt(getValue('Credits', semesterCourses[i]));
+    }
   }
   return totalCredits;
 }
 
 function getValue(colVal, id) {
-  var val = classDB.exec("SELECT " + colVal + " FROM project WHERE ID='" + id +"'");
-  return (val[0].values[0][0]);
+  //returns null if there is an error
+  val = classDB.exec("SELECT " + colVal + " FROM project WHERE ID='" + id +"'");
+  try {
+    return (val[0].values[0][0]);
+  }
+  catch(err) {
+    return null;
+  }
 }
 
 function checkSemesters(courseID) {
