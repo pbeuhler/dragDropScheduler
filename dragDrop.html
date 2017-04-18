@@ -10,17 +10,6 @@
 		<div style="color:#3366ff;font-family:arial;" align="center">
 		<h3>Course Planner - Pijamajammers</h3>
 
-		<h5> Semester Generator </h5>
-		<form>
-		Starting Year:
-		<input type="text" id="first" value="">
-		   Graduation Year:
-		<input type="text" id="last" value="">
-		<button onclick="h()">GO</button>
-		</form>
-
-
-<div id="above">
 		<Required id="Required" draggable="true" ondrop="drop(event)" ondragover="allowDrop(event)"><div class = "title">Required Courses- Hover for Course Description</div>
 				<div id="MATH125" draggable="true" onmouseover="hover(this)" onmouseleave="leave(this)" ondragstart="drag(event)" title = "Calc 1" style="background:white">MATH 125</div>
 				<div id="CHEM150" draggable="true" onmouseover="hover(this)" onmouseleave="leave(this)" ondragstart="drag(event)" title = "Chemistry for Engineers" style="background:white">CHEM 150</div>
@@ -65,7 +54,8 @@
 				<div id="Tech3" draggable="true" onmouseover="hover(this)" onmouseleave="leave(this)" ondragstart="drag(event)" title = "Technical Elective" style="background:white">Tech Elec 3</div>
 				<div id="KUCore6" draggable="true" onmouseover="hover(this)" onmouseleave="leave(this)" ondragstart="drag(event)" title = "AE 4.2" style="background:white">KU Core 6</div>
 		</Required>
-
+			
+		<Prereqs id="Prereqs" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><div class = "title">Prior Credits</div></Prereqs>
 		<div id = "SemesterBlock">
 			<Semester id="s1" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><div class = "title">Fall 1</div></Semester>
 			<Semester id="s2" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><div class = "title">Spring 1</div></Semester>
@@ -75,18 +65,8 @@
 			<Semester id="s6" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><div class = "title">Spring 3</div></Semester>
 	        <Semester id="s7" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><div class = "title">Fall 4</div></Semester>
 			<Semester id="s8" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><div class = "title">Spring 4</div></Semester>
-			<Prereqs id="Prereqs" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><div class = "title">Prior Credits</div></Prereqs>
 		</div>
-
-	</div>
-
-	<div id = "InformationBlock">
-		<div id="Conflicts" draggable="false"><header>Conflicts</header></div>
-		<div id="Info">
-		<header>Info</header>
-		<p></p>
-		</div>
-	</div>
+		<Info id = "Info" draggable="false"><div class = "title">Info</div></Info>
 
    </body>
 </html>
