@@ -9,7 +9,7 @@ oReq.onload = function(e) {
 oReq.send();
 
 var semestersArray = ['Prereqs', 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8'];
-var dropArr = ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8'];
+var dropArr = ['Prereqs', 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8'];
 var notInDatabase = ['KUCore1', 'KUCore2', 'KUCore3', 'KUCore4', 'Tech1', 'KUCore5', 'Tech2', 'Tech3', 'KUCore6'];
 var Used = [];
 var preReq = [];
@@ -136,7 +136,7 @@ function drop(ev) {
 		  diff++;
 	  }
   }
-  if(diff < 8){
+  if(diff <= 8){
 
 
 		//succesful drop
