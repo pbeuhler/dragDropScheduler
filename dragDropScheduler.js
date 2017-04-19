@@ -224,11 +224,32 @@ function refresh() {
   }
 }
 
+function refreshSemesterHours() {
+  var currentTitle = "";
+  var lastNum = 0;
+  var credits = 0;
+  for (semesterIters in dropArr) {
+    credits = getCreditsSemester(dropArr[semesterIters]);
+    currentTitle = document.getElementById(dropArr[semesterIters]).children[0].innerHTML;
+    lastNum = 0;
+    for (titleIter in currentTitle) {
+      if ((!(isNaN(currentTitle[titleIter]))) && (currentTitle[titleIter] != " ")) {
+        lastNum = currentTitle[titleIter];
+        currentTitle = currentTitle.substring(0,titleIter);
+        break;
+      }
+    }
+    currentTitle = currentTitle + lastNum.toString() + " (" + credits.toString() + " Cr)";
+    document.getElementById(dropArr[semesterIters]).children[0].innerHTML = currentTitle;
+  }
+}
+
 function drop(ev) {
   ev.preventDefault();
   var data = ev.dataTransfer.getData("text");
 	ev.target.appendChild(document.getElementById(data));
   refresh();
+  refreshSemesterHours();
 	var prereqsMet = checkPrerequisitesMet(document.getElementById(data).id);
 	var coreqsMet = checkCorequisitesMet(document.getElementById(data).id);
 	var semesterRight = checkSemesters(document.getElementById(data).id);
@@ -242,17 +263,20 @@ function drop(ev) {
     }
   }
   if (semesterRight == false) {
-    document.getElementById(data).style = "background:gold"
+    document.getElementById(data).style = "background:gold";
   }
   else {
-    document.getElementById(data).style = "background:white"
+    if (unmet.indexOf(document.getElementById(data).id) > -1) {
+      document.getElementById(data).style = "background:IndianRed";
+    }
+    else {
+      document.getElementById(data).style = "background:white";
+    }
   }
-
-  var curSemester = document.getElementById(data).parentNode.children[0].innerHTML;
-  console.log(document.getElementById(data).id);
-  console.log("coreqs: " + coreqsMet);
-  console.log("prereqs: " + prereqsMet);
-  console.log("------------------");
+  // console.log(document.getElementById(data).id);
+  // console.log("coreqs: " + coreqsMet);
+  // console.log("prereqs: " + prereqsMet);
+  // console.log("------------------");
 }
 
 
