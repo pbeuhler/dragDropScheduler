@@ -14,6 +14,7 @@ var notInDatabase = ['KUCore1', 'KUCore2', 'KUCore3', 'KUCore4', 'Tech1', 'KUCor
 var Used = [];
 var preReq = [];
 var num_drops;
+var unmet = [];
 
 
 
@@ -41,22 +42,67 @@ function allowDrop(ev) {
   //info();
 }
 
-function hover(ev) {
-  var x = document.querySelectorAll("*[draggable=true]");
-  for (i in x) {
-    if (((typeof x[i]) == 'object') && (x[i].parentNode.id == 'Required')) {
-      x[i].style = "background:white";
-    }
-    else if ((typeof x[i]) == 'object') {
-      if (x[i].style.background != 'IndianRed') {
-        x[i].style = "background:white";
-      }
-      else if ((checkPrerequisitesMet(x[i].id) == true) && (checkCorequisitesMet(x[i].id) == true)) {
-         x[i].style = "background:white";
-       }
-    }
-  }
+// function hover(ev) {
+//   var x = document.querySelectorAll("*[draggable=true]");
+//   for (i in x) {
+//     if (((typeof x[i]) == 'object') && (x[i].parentNode.id == 'Required')) {
+//       x[i].style = "background:white";
+//     }
+//     else if ((typeof x[i]) == 'object') {
+//       if (x[i].style.background != 'indianred') {
+//         x[i].style = "background:white";
+//       }
+//       else if ((checkPrerequisitesMet(x[i].id) == true) && (checkCorequisitesMet(x[i].id) == true)) {
+//          x[i].style = "background:white";
+//        }
+//     }
+//   }
+//
+//   divId = ev.getAttribute('id');
+//   for (i in notInDatabase) {
+//     if (divId == notInDatabase[i]) {
+//       document.getElementById(divId).style = "background:PaleGreen";
+//       return true;
+//     }
+//   }
+//   Info.innerHTML = getValue('Name',divId) + "<br />" + getValue('Description',divId);
+//   if (checkPrerequisitesMet(divId) == true) {
+//     document.getElementById(divId).style = "background:PaleGreen";
+//   }
+//   else {
+//     document.getElementById(divId).style = "background:IndianRed";
+//     notMetPreArray = checkPrerequisitesMet(divId);
+//     notMetCoArray = checkCorequisitesMet(divId);
+//     if (notMetPreArray[0] == "senior") {
+//       document.getElementById(divId).style = "background:PaleGreen";
+//       return true;
+//     }
+//     for (i in notMetCoArray) {
+//       if (document.getElementById(notMetCoArray[i]).style.background != 'indianred') {
+//         document.getElementById(notMetCoArray[i]).style = "background:Wheat";
+//       }
+//     }
+//     for (i in notMetPreArray) {
+//       if (document.getElementById(notMetPreArray[i]).style.background != 'indianred') {
+//         document.getElementById(notMetPreArray[i]).style = "background:Pink";
+//       }
+//     }
+//   }
+// }
 
+function hover(ev) {
+  refresh();
+  var x = document.querySelectorAll("*[draggable=true]");
+    for (i in x) {
+      if ((typeof x[i]) == 'object') {
+        if (!(unmet.indexOf(x[i].id) > -1)) {
+          x[i].style = "background:white";
+        }
+        else {
+          x[i].style = "background:IndianRed";
+        }
+      }
+    }
   divId = ev.getAttribute('id');
   for (i in notInDatabase) {
     if (divId == notInDatabase[i]) {
@@ -65,26 +111,37 @@ function hover(ev) {
     }
   }
   Info.innerHTML = getValue('Name',divId) + "<br />" + getValue('Description',divId);
-  if (checkPrerequisitesMet(divId) == true) {
-    document.getElementById(divId).style = "background:PaleGreen";
-  }
-  else {
-    document.getElementById(divId).style = "background:IndianRed";
-    notMetPreArray = checkPrerequisitesMet(divId);
-    notMetCoArray = checkCorequisitesMet(divId);
-    if (notMetPreArray[0] == "senior") {
+  notMetPreArray = checkPrerequisitesMet(divId);
+  notMetCoArray = checkCorequisitesMet(divId);
+  if (notMetPreArray[0] == "senior") {
+    if ((document.getElementById(divId).parentNode.id == 's7') || (document.getElementById(divId).parentNode.id == 's8') || (document.getElementById(divId).parentNode.id == 'Required') || (document.getElementById(divId).parentNode.id == 'Prereqs')) {
       document.getElementById(divId).style = "background:PaleGreen";
       return true;
     }
+  }
+  if ((notMetPreArray == true) && (notMetCoArray == true)) {
+    document.getElementById(divId).style = "background:PaleGreen";
+    return true;
+  }
+  else if (notMetPreArray == true) {
+    document.getElementById(divId).style = "background:IndianRed";
     for (i in notMetCoArray) {
-      if (document.getElementById(notMetCoArray[i]).style.background != 'indianred') {
-        document.getElementById(notMetCoArray[i]).style = "background:Wheat";
-      }
+      document.getElementById(notMetCoArray[i]).style = "background:Wheat";
     }
+  }
+  else if (notMetCoArray == true) {
+    document.getElementById(divId).style = "background:IndianRed";
     for (i in notMetPreArray) {
-      if (document.getElementById(notMetPreArray[i]).style.background != 'indianred') {
-        document.getElementById(notMetPreArray[i]).style = "background:Pink";
-      }
+      document.getElementById(notMetPreArray[i]).style = "background:Pink";
+    }
+  }
+  else {
+    document.getElementById(divId).style = "background:IndianRed";
+    for (i in notMetPreArray) {
+      document.getElementById(notMetPreArray[i]).style = "background:Pink";
+    }
+    for (i in notMetCoArray) {
+      document.getElementById(notMetCoArray[i]).style = "background:Wheat";
     }
   }
 }
@@ -151,15 +208,43 @@ function Position(data,target,rank){
 			}
 } */
 
+function refresh() {
+  var prereqs = 0;
+  var coreqs = 0;
+  var index = 0;
+  var splicedFlag = false;
+  for (iters in unmet) {
+    prereqs = checkPrerequisitesMet(unmet[iters]);
+    coreqs = checkCorequisitesMet(unmet[iters]);
+    if ((prereqs == true) && (coreqs == true)) {
+      document.getElementById(unmet[iters]).style = "background:white";
+      unmet.splice(iters,1);
+      splicedFlag = true;
+      iters = 10000;
+    }
+  }
+  if (splicedFlag == true) {
+    refresh();
+  }
+}
+
 function drop(ev) {
   ev.preventDefault();
   var data = ev.dataTransfer.getData("text");
-
-	 ev.target.appendChild(document.getElementById(data));
+	ev.target.appendChild(document.getElementById(data));
+  refresh();
 	var prereqsMet = checkPrerequisitesMet(document.getElementById(data).id);
 	var coreqsMet = checkCorequisitesMet(document.getElementById(data).id);
 	var semesterRight = checkSemesters(document.getElementById(data).id);
 	var credits = getCreditsSemester(ev.target.id);
+  if ((prereqsMet != true) || coreqsMet != true) {
+    document.getElementById(data).style = "background:IndianRed";
+    if (!(unmet.indexOf(document.getElementById(data).id) > -1)) {
+      if ((document.getElementById(document.getElementById(data).id).parentNode.id != 'Required') && (document.getElementById(document.getElementById(data).id).parentNode.id != 'Prereqs')) {
+        unmet.push(document.getElementById(data).id);
+      }
+    }
+  }
   var curSemester = document.getElementById(data).parentNode.children[0].innerHTML;
   console.log(document.getElementById(data).id);
   console.log("coreqs: " + coreqsMet);
