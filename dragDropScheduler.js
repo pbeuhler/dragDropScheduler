@@ -13,7 +13,6 @@ var dropArr = ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8'];
 var notInDatabase = ['KUCore1', 'KUCore2', 'KUCore3', 'KUCore4', 'Tech1', 'KUCore5', 'Tech2', 'Tech3', 'KUCore6'];
 var Used = [];
 var preReq = [];
-var num_drops;
 var unmet = [];
 
 
@@ -223,9 +222,6 @@ function refresh() {
       iters = 10000;
     }
   }
-  if (splicedFlag == true) {
-    refresh();
-  }
 }
 
 function drop(ev) {
@@ -245,6 +241,13 @@ function drop(ev) {
       }
     }
   }
+  if (semesterRight == false) {
+    document.getElementById(data).style = "background:gold"
+  }
+  else {
+    document.getElementById(data).style = "background:white"
+  }
+
   var curSemester = document.getElementById(data).parentNode.children[0].innerHTML;
   console.log(document.getElementById(data).id);
   console.log("coreqs: " + coreqsMet);
