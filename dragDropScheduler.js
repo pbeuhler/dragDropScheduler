@@ -41,67 +41,9 @@ function allowDrop(ev) {
   //info();
 }
 
-// function hover(ev) {
-//   var x = document.querySelectorAll("*[draggable=true]");
-//   for (i in x) {
-//     if (((typeof x[i]) == 'object') && (x[i].parentNode.id == 'Required')) {
-//       x[i].style = "background:white";
-//     }
-//     else if ((typeof x[i]) == 'object') {
-//       if (x[i].style.background != 'indianred') {
-//         x[i].style = "background:white";
-//       }
-//       else if ((checkPrerequisitesMet(x[i].id) == true) && (checkCorequisitesMet(x[i].id) == true)) {
-//          x[i].style = "background:white";
-//        }
-//     }
-//   }
-//
-//   divId = ev.getAttribute('id');
-//   for (i in notInDatabase) {
-//     if (divId == notInDatabase[i]) {
-//       document.getElementById(divId).style = "background:PaleGreen";
-//       return true;
-//     }
-//   }
-//   Info.innerHTML = getValue('Name',divId) + "<br />" + getValue('Description',divId);
-//   if (checkPrerequisitesMet(divId) == true) {
-//     document.getElementById(divId).style = "background:PaleGreen";
-//   }
-//   else {
-//     document.getElementById(divId).style = "background:IndianRed";
-//     notMetPreArray = checkPrerequisitesMet(divId);
-//     notMetCoArray = checkCorequisitesMet(divId);
-//     if (notMetPreArray[0] == "senior") {
-//       document.getElementById(divId).style = "background:PaleGreen";
-//       return true;
-//     }
-//     for (i in notMetCoArray) {
-//       if (document.getElementById(notMetCoArray[i]).style.background != 'indianred') {
-//         document.getElementById(notMetCoArray[i]).style = "background:Wheat";
-//       }
-//     }
-//     for (i in notMetPreArray) {
-//       if (document.getElementById(notMetPreArray[i]).style.background != 'indianred') {
-//         document.getElementById(notMetPreArray[i]).style = "background:Pink";
-//       }
-//     }
-//   }
-// }
-
 function hover(ev) {
   refresh();
-  var x = document.querySelectorAll("*[draggable=true]");
-    for (i in x) {
-      if ((typeof x[i]) == 'object') {
-        if (!(unmet.indexOf(x[i].id) > -1)) {
-          x[i].style = "background:white";
-        }
-        else {
-          x[i].style = "background:IndianRed";
-        }
-      }
-    }
+  refreshWhite();
   divId = ev.getAttribute('id');
   for (i in notInDatabase) {
     if (divId == notInDatabase[i]) {
@@ -109,7 +51,8 @@ function hover(ev) {
       return true;
     }
   }
-  Info.innerHTML = getValue('Name',divId) + "<br />" + getValue('Description',divId);
+  document.getElementById('Info').children[0].innerHTML = getValue('Name',divId);
+  document.getElementById('Info').children[1].innerHTML = "<br />" + getValue('Description',divId);
   notMetPreArray = checkPrerequisitesMet(divId);
   notMetCoArray = checkCorequisitesMet(divId);
   if (notMetPreArray[0] == "senior") {
@@ -173,40 +116,6 @@ function drag(ev) {
   ev.dataTransfer.setData("text", ev.target.id);
 }
 
-function Position(data,target,rank){
-	this.course_id = data;
-	this.target = target;
-	this.rank = rank;
-
-	//refresh course position
-	this.refresh = function(num_drops){
-		for(i in Used){
-				var a = this.course_id;
-				var b = Used[i].course_id;
-				//same id tag
-				if(a == b && i<Used.length-1){
-					this.course_id = Used[i].course_id;
-					this.rank = num_drops;
-					var ind = Used.indexOf(Used[i]);
-					Used.splice(num_drops-1,1);
-				}
-			}
-	}
-}
-
-/* for refresh_array(source,prereq_name){
-	for(i in Used){
-				var a = source.course_id;
-				//same id tag
-				if(a == prereq_name && preReq[i].course_id == prereq_name){
-					source.course_id = Used[i].course_id;
-					source.target = ;
-					var ind = Used.indexOf(Used[i]);
-					preReq.splice(num_drops-1,1);
-				}
-			}
-} */
-
 function refresh() {
   var prereqs = 0;
   var coreqs = 0;
@@ -215,11 +124,37 @@ function refresh() {
   for (iters in unmet) {
     prereqs = checkPrerequisitesMet(unmet[iters]);
     coreqs = checkCorequisitesMet(unmet[iters]);
-    if ((prereqs == true) && (coreqs == true)) {
+    if (((prereqs == true) && (coreqs == true)) || (document.getElementById(unmet[iters]).parentNode.id == "Required") || (document.getElementById(unmet[iters]).parentNode.id == "Prereqs")) {
       document.getElementById(unmet[iters]).style = "background:white";
       unmet.splice(iters,1);
       splicedFlag = true;
       iters = 10000;
+    }
+  }
+  if (splicedFlag == true) {
+    refresh();
+  }
+}
+
+function refreshUnmetArray() {
+  var curArray = [];
+  var prereqsMet = [];
+  var coreqsMet = [];
+  var data = "";
+  for (unmetIters in dropArr) {
+    curArray = getChildren(dropArr[unmetIters]);
+    for (childIter in curArray) {
+      data = curArray[childIter];
+      prereqsMet = checkPrerequisitesMet(data);
+      coreqsMet = checkCorequisitesMet(data);
+      if ((prereqsMet != true) || coreqsMet != true) {
+        document.getElementById(data).style = "background:IndianRed";
+        if (!(unmet.indexOf(document.getElementById(data).id) > -1)) {
+          if ((document.getElementById(document.getElementById(data).id).parentNode.id != 'Required') && (document.getElementById(document.getElementById(data).id).parentNode.id != 'Prereqs')) {
+            unmet.push(document.getElementById(data).id);
+          }
+        }
+      }
     }
   }
 }
@@ -244,24 +179,63 @@ function refreshSemesterHours() {
   }
 }
 
+function refreshWhite() {
+  var x = document.querySelectorAll("*[draggable=true]");
+    for (whiteIter in x) {
+      if ((typeof x[whiteIter]) == 'object') {
+        if ((!(unmet.indexOf(x[whiteIter].id) > -1) && (checkSemesters(x[whiteIter].id) == true))) {
+          x[whiteIter].style = "background:white";
+        }
+        else if (checkSemesters(x[whiteIter].id) == false) {
+          x[whiteIter].style = "background:gold";
+        }
+        else {
+          x[whiteIter].style = "background:IndianRed";
+        }
+
+      }
+    }
+}
+
 function drop(ev) {
   ev.preventDefault();
   var data = ev.dataTransfer.getData("text");
-	ev.target.appendChild(document.getElementById(data));
+  var targetDiv = ev.target;
+  var firstFlag = false;
+  var parentFlag = false;
+  for (checkIter in semestersArray) {
+    if (targetDiv.id == semestersArray[checkIter]) {
+      firstFlag = true;
+    }
+    if (targetDiv.parentNode.id == semestersArray[checkIter]) {
+      parentFlag = true;
+    }
+  }
+  if (targetDiv.id == "Required") {
+    targetDiv.appendChild(document.getElementById(data));
+    refresh();
+    refreshSemesterHours();
+    refreshUnmetArray();
+    refreshWhite();
+    return true;
+  }
+  if (firstFlag == false) {
+    if (parentFlag == true) {
+      targetDiv = targetDiv.parentNode;
+    }
+    else {
+      return false;
+    }
+  }
+  targetDiv.appendChild(document.getElementById(data));
   refresh();
   refreshSemesterHours();
+  refreshUnmetArray();
+  refreshWhite();
 	var prereqsMet = checkPrerequisitesMet(document.getElementById(data).id);
 	var coreqsMet = checkCorequisitesMet(document.getElementById(data).id);
 	var semesterRight = checkSemesters(document.getElementById(data).id);
-	var credits = getCreditsSemester(ev.target.id);
-  if ((prereqsMet != true) || coreqsMet != true) {
-    document.getElementById(data).style = "background:IndianRed";
-    if (!(unmet.indexOf(document.getElementById(data).id) > -1)) {
-      if ((document.getElementById(document.getElementById(data).id).parentNode.id != 'Required') && (document.getElementById(document.getElementById(data).id).parentNode.id != 'Prereqs')) {
-        unmet.push(document.getElementById(data).id);
-      }
-    }
-  }
+	var credits = getCreditsSemester(targetDiv.id);
   if (semesterRight == false) {
     document.getElementById(data).style = "background:gold";
   }
@@ -314,6 +288,9 @@ function checkSemesters(courseID) {
   //returns false if the course is not offered in the attempted semester, true otherwise
   var semestersOffered = getValue('Semesters', courseID);
   var curSemester = document.getElementById(courseID).parentNode.id;
+  if ((curSemester == 'Required') || (curSemester == 'Prereqs')) {
+    return true;
+  }
   var season = '';
   if ((curSemester == 's1') || (curSemester == 's3') || (curSemester == 's5') || (curSemester == 's7')) {
     season = 'fall';
