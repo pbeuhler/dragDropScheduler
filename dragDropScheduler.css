@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!--/* Prevent the text contents of draggable elements from being selectable. */
 [draggable] {
   -moz-user-select: none;
@@ -88,3 +89,83 @@
 
   }
 }
+=======
+<!--/* Prevent the text contents of draggable elements from being selectable. */
+[draggable] {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  /* Required to make elements draggable in old WebKit */
+  -khtml-user-drag: element;
+  -webkit-user-drag: element;
+}-->
+  #Required{
+    float: left;
+    width: 1040px;
+    height: 150px;
+    margin: 10px;
+    padding: 3px;
+    border: 3px solid black;
+  }
+
+  #Prereqs {
+    float: left;
+    width: 150px;
+    height: 370px;
+    margin: 5px;
+    padding: 3px;
+    border: 3px solid black;
+  }
+
+  #SemesterBlock{
+    float: left;
+    width: 680px;
+    height: 370px;
+    margin: 5px;
+    padding: 3px;
+  }
+
+
+  Semester{
+    float: left;
+    width: 150px;
+    height: 160px;
+    margin: 5px;
+    padding: 3px;
+    border: 2px solid black;
+  }
+
+  #Info{
+    float: left;
+    width: 150px;
+    height: 370px;
+    margin: 5px;
+    padding: 3px;
+    border: 3px solid black;
+    font-size:13px;
+    font-size: 1vw;
+  }
+
+  *[draggable=true]
+  {
+    width: 50px;
+    height: 30px;
+    float: left;
+    margin: 2px;
+    padding: 2px;
+    border: 1px solid black;
+    font-size:12px;
+  }
+
+  .title
+  {
+    background-color:#3366ff;
+    text-align:center;
+    color:white;
+    padding: 2px 0px;
+    font-size:14px;
+
+  }
+}
+>>>>>>> origin/database

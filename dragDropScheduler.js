@@ -159,6 +159,29 @@ function refreshUnmetArray() {
   }
 }
 
+function refreshUnmetArray() {
+  var curArray = [];
+  var prereqsMet = [];
+  var coreqsMet = [];
+  var data = "";
+  for (unmetIters in dropArr) {
+    curArray = getChildren(dropArr[unmetIters]);
+    for (childIter in curArray) {
+      data = curArray[childIter];
+      prereqsMet = checkPrerequisitesMet(data);
+      coreqsMet = checkCorequisitesMet(data);
+      if ((prereqsMet != true) || coreqsMet != true) {
+        document.getElementById(data).style = "background:IndianRed";
+        if (!(unmet.indexOf(document.getElementById(data).id) > -1)) {
+          if ((document.getElementById(document.getElementById(data).id).parentNode.id != 'Required') && (document.getElementById(document.getElementById(data).id).parentNode.id != 'Prereqs')) {
+            unmet.push(document.getElementById(data).id);
+          }
+        }
+      }
+    }
+  }
+}
+
 function refreshSemesterHours() {
   var currentTitle = "";
   var lastNum = 0;
@@ -231,11 +254,18 @@ function drop(ev) {
   refresh();
   refreshSemesterHours();
   refreshUnmetArray();
+<<<<<<< HEAD
   refreshWhite();
 	var prereqsMet = checkPrerequisitesMet(document.getElementById(data).id);
 	var coreqsMet = checkCorequisitesMet(document.getElementById(data).id);
 	var semesterRight = checkSemesters(document.getElementById(data).id);
 	var credits = getCreditsSemester(targetDiv.id);
+=======
+	var prereqsMet = checkPrerequisitesMet(document.getElementById(data).id);
+	var coreqsMet = checkCorequisitesMet(document.getElementById(data).id);
+	var semesterRight = checkSemesters(document.getElementById(data).id);
+	var credits = getCreditsSemester(ev.target.id);
+>>>>>>> origin/database
   if (semesterRight == false) {
     document.getElementById(data).style = "background:gold";
   }
@@ -288,7 +318,11 @@ function checkSemesters(courseID) {
   //returns false if the course is not offered in the attempted semester, true otherwise
   var semestersOffered = getValue('Semesters', courseID);
   var curSemester = document.getElementById(courseID).parentNode.id;
+<<<<<<< HEAD
   if ((curSemester == 'Required') || (curSemester == 'Prereqs')) {
+=======
+  if ((curSemester == 'Required') || (curSemester == 'Prerequisites')) {
+>>>>>>> origin/database
     return true;
   }
   var season = '';
