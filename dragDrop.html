@@ -55,6 +55,15 @@
 				<div id="Tech3" draggable="true" onmouseover="hover(this)" onmouseleave="leave(this)" ondragstart="drag(event)" title = "Technical Elective" style="background:white">Tech Elec 3</div>
 				<div id="KUCore6" draggable="true" onmouseover="hover(this)" onmouseleave="leave(this)" ondragstart="drag(event)" title = "AE 4.2" style="background:white">KU Core 6</div>
 		</Required>
+    <div id = "ColorKey">
+      <div class = "title">Color Key</div>
+      <div id="green" draggable="false" class="keyBlock" style="background:PaleGreen">Valid Choice</div>
+      <div id="wheat" draggable="false" class="keyBlock" style="background:Wheat">Coreq Missing for Selection</div>
+      <div id="indianred" draggable="false" class="keyBlock" style="background:IndianRed">Invalid Choice</div>
+      <div id="pink" draggable="false" class="keyBlock" style="background:Pink">Prereq Missing for selection</div>
+      <div id="gold" draggable="false" class="keyBlock" style="background:gold">Not Offered in Selected Semester</div>
+      <div id="DarkOrange" draggable="false" class="keyBlock" style="background:DarkOrange">Taking More than 19 Credits</div>
+    </div>
 
 		<Prereqs id="Prereqs" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><div class = "title">Prior Credits</div></Prereqs>
 		<div id = "SemesterBlock">
@@ -68,7 +77,6 @@
 			<Semester id="s8" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><div class = "title">Spring 4</div></Semester>
 		</div>
 		<Info id = "Info" draggable="false"><div class = "title">Info</div><div class = "paragraph"></div></Info>
-
 
    </body>
 </html>

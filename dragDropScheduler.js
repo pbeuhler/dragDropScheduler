@@ -240,6 +240,8 @@ function drop(ev) {
     refreshSemesterHours();
     refreshUnmetArray();
     refreshWhite();
+    document.getElementById('Info').children[0].innerHTML = getValue('Name',data);
+    document.getElementById('Info').children[1].innerHTML = "<br />" + getValue('Description',data);
     return true;
   }
   if (firstFlag == false) {
@@ -259,6 +261,14 @@ function drop(ev) {
 	var coreqsMet = checkCorequisitesMet(document.getElementById(data).id);
 	var semesterRight = checkSemesters(document.getElementById(data).id);
 	var credits = getCreditsSemester(targetDiv.id);
+  document.getElementById('Info').children[0].innerHTML = getValue('Name',data);
+  document.getElementById('Info').children[1].innerHTML = "<br />" + getValue('Description',data);
+  if (credits > 19) {
+    targetDiv.children[0].style = "background:DarkOrange";
+  }
+  else {
+    targetDiv.children[0].style = "background:#3366ff";
+  }
   if (semesterRight == false) {
     document.getElementById(data).style = "background:gold";
   }
