@@ -59,9 +59,12 @@ function hover(ev) {
   document.getElementById('Info').children[1].innerHTML = "<br />" + getValue('Description',divId);
   notMetPreArray = checkPrerequisitesMet(divId);
   notMetCoArray = checkCorequisitesMet(divId);
-  if (notMetPreArray[0] == "senior") {
-    if ((document.getElementById(divId).parentNode.id == 's7') || (document.getElementById(divId).parentNode.id == 's8') || (document.getElementById(divId).parentNode.id == 'Required') || (document.getElementById(divId).parentNode.id == 'Prereqs')) {
+  if (getValue("Prerequisites", divId) == 'senior') {
+    if ((document.getElementById(divId).parentNode.id == 'Required') || (document.getElementById(divId).parentNode.id == 'Prereqs') || (document.getElementById(divId).parentNode.id == 's7')) {
       document.getElementById(divId).style = "background:PaleGreen";
+      return true;
+    }
+    else {
       return true;
     }
   }
@@ -323,6 +326,14 @@ function checkSemesters(courseID) {
   if ((curSemester == 'Required') || (curSemester == 'Prereqs')) {
     return true;
   }
+  if (getValue('Prerequisites', courseID) == 'senior') {
+    if (curSemester == 's7') {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
   var season = '';
   if ((curSemester == 's1') || (curSemester == 's3') || (curSemester == 's5') || (curSemester == 's7')) {
     season = 'fall';
@@ -446,9 +457,7 @@ function checkPrerequisitesMet(courseID) {
     prereqMetFlag = orFlag;
   }
   if (prerequisites == 'senior') {
-    if ((document.getElementById(courseID).parentNode.id == 's7') || (document.getElementById(courseID).parentNode.id == 's8')) {
-      prereqMetFlag = true;
-    }
+    prereqMetFlag = true;
   }
   if (prerequisites == '-') {
     prereqMetFlag = true;
