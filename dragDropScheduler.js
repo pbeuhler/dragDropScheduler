@@ -159,29 +159,6 @@ function refreshUnmetArray() {
   }
 }
 
-function refreshUnmetArray() {
-  var curArray = [];
-  var prereqsMet = [];
-  var coreqsMet = [];
-  var data = "";
-  for (unmetIters in dropArr) {
-    curArray = getChildren(dropArr[unmetIters]);
-    for (childIter in curArray) {
-      data = curArray[childIter];
-      prereqsMet = checkPrerequisitesMet(data);
-      coreqsMet = checkCorequisitesMet(data);
-      if ((prereqsMet != true) || coreqsMet != true) {
-        document.getElementById(data).style = "background:IndianRed";
-        if (!(unmet.indexOf(document.getElementById(data).id) > -1)) {
-          if ((document.getElementById(document.getElementById(data).id).parentNode.id != 'Required') && (document.getElementById(document.getElementById(data).id).parentNode.id != 'Prereqs')) {
-            unmet.push(document.getElementById(data).id);
-          }
-        }
-      }
-    }
-  }
-}
-
 function refreshSemesterHours() {
   var currentTitle = "";
   var lastNum = 0;
@@ -189,6 +166,12 @@ function refreshSemesterHours() {
   for (semesterIters in dropArr) {
     credits = getCreditsSemester(dropArr[semesterIters]);
     currentTitle = document.getElementById(dropArr[semesterIters]).children[0].innerHTML;
+    if (credits > 19) {
+      document.getElementById(dropArr[semesterIters]).children[0].style = "background:DarkOrange";
+    }
+    else {
+      document.getElementById(dropArr[semesterIters]).children[0].style = "background:#3366ff";
+    }
     lastNum = 0;
     for (titleIter in currentTitle) {
       if ((!(isNaN(currentTitle[titleIter]))) && (currentTitle[titleIter] != " ")) {
@@ -230,7 +213,7 @@ function drop(ev) {
     if (targetDiv.id == semestersArray[checkIter]) {
       firstFlag = true;
     }
-    if (targetDiv.parentNode.id == semestersArray[checkIter]) {
+    if ((targetDiv.parentNode.id == semestersArray[checkIter]) || (targetDiv.parentNode.id == 'Required')) {
       parentFlag = true;
     }
   }
@@ -261,13 +244,15 @@ function drop(ev) {
 	var coreqsMet = checkCorequisitesMet(document.getElementById(data).id);
 	var semesterRight = checkSemesters(document.getElementById(data).id);
 	var credits = getCreditsSemester(targetDiv.id);
-  document.getElementById('Info').children[0].innerHTML = getValue('Name',data);
-  document.getElementById('Info').children[1].innerHTML = "<br />" + getValue('Description',data);
-  if (credits > 19) {
-    targetDiv.children[0].style = "background:DarkOrange";
+  notFlag = false;
+  for (i in notInDatabase) {
+    if (divId == notInDatabase[i]) {
+      notFlag = true;
+    }
   }
-  else {
-    targetDiv.children[0].style = "background:#3366ff";
+  if (notFlag == false) {
+    document.getElementById('Info').children[0].innerHTML = getValue('Name',data);
+    document.getElementById('Info').children[1].innerHTML = "<br />" + getValue('Description',data);
   }
   if (semesterRight == false) {
     document.getElementById(data).style = "background:gold";
