@@ -1,3 +1,4 @@
+//Initialize the database for use in javascript via sql.js
 var lotInfoDB;
 var oReq = new XMLHttpRequest();
 oReq.open("GET", "https://people.eecs.ku.edu/~jfreeman67/Lab5/448.db", true);
@@ -8,6 +9,7 @@ oReq.onload = function(e) {
 };
 oReq.send();
 
+//Global arrays for use in logic
 var semestersArray = ['Prereqs', 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8'];
 var dropArr = ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8'];
 var notInDatabase = ['KUCore1', 'KUCore2', 'KUCore3', 'KUCore4', 'Tech1', 'KUCore5', 'Tech2', 'Tech3', 'KUCore6'];
@@ -15,8 +17,7 @@ var Used = [];
 var preReq = [];
 var unmet = [];
 
-
-
+//returns an array of the ids of children of a passed div ID
 function getChildren(divID) {
   var div = document.getElementById(divID);
   var children = div.childNodes;
@@ -29,6 +30,7 @@ function getChildren(divID) {
   return elements;
 }
 
+//handles drag functionality
 function dragStart(ev) {
    ev.dataTransfer.effectAllowed='move';
    ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
@@ -36,11 +38,13 @@ function dragStart(ev) {
 
 }
 
+//handles drop functionality
 function allowDrop(ev) {
   ev.preventDefault();
   //info();
 }
 
+//displays course info, refreshes the highlighting of courses
 function hover(ev) {
   refresh();
   refreshWhite();
@@ -88,6 +92,7 @@ function hover(ev) {
   }
 }
 
+//out of date, currently no use
 function leave(ev) {
   // divId = ev.getAttribute('id');
   // for (i in notInDatabase) {
@@ -111,11 +116,13 @@ function leave(ev) {
   // }
 }
 
+//handles drag functionality
 function drag(ev) {
 	dragStart(ev);
   ev.dataTransfer.setData("text", ev.target.id);
 }
 
+//refreshes changing backgrounds from red to white
 function refresh() {
   var prereqs = 0;
   var coreqs = 0;
@@ -136,6 +143,7 @@ function refresh() {
   }
 }
 
+//refreshes the global array of all courses that are in a semester and don't have their prereqs met
 function refreshUnmetArray() {
   var curArray = [];
   var prereqsMet = [];
@@ -159,6 +167,7 @@ function refreshUnmetArray() {
   }
 }
 
+//refreshes the number of hours displayed in the semesters and their highlighting
 function refreshSemesterHours() {
   var currentTitle = "";
   var lastNum = 0;
@@ -185,6 +194,7 @@ function refreshSemesterHours() {
   }
 }
 
+//iterates through draggables and resets them to white unless they are in the unmet array on drop or hover leave
 function refreshWhite() {
   var x = document.querySelectorAll("*[draggable=true]");
     for (whiteIter in x) {
@@ -203,6 +213,7 @@ function refreshWhite() {
     }
 }
 
+//drop functionality, handles checking if the semester is valid, refreshing, updating info, etc.
 function drop(ev) {
   ev.preventDefault();
   var data = ev.dataTransfer.getData("text");
@@ -272,6 +283,7 @@ function drop(ev) {
 }
 
 
+//returns the number of credits in a given semester
 function getCreditsSemester(divID) {
   var semesterCourses = getChildren(divID);
   var totalCredits = 0;
@@ -286,6 +298,7 @@ function getCreditsSemester(divID) {
   return totalCredits;
 }
 
+//queries the database based on an id and a column name, returns a value or null
 function getValue(colVal, id) {
   //returns null if there is an error
   val = classDB.exec("SELECT " + colVal + " FROM project WHERE ID='" + id +"'");
@@ -297,6 +310,7 @@ function getValue(colVal, id) {
   }
 }
 
+//check if the semester placed in is valid
 function checkSemesters(courseID) {
   for (i in notInDatabase) {
     if (courseID == notInDatabase[i]) {
@@ -330,6 +344,7 @@ function checkSemesters(courseID) {
   }
 }
 
+//checks if coreqs are met, returns true or an array of unmet
 function checkCorequisitesMet(courseID) {
   for (i in notInDatabase) {
     if (courseID == notInDatabase[i]) {
@@ -376,10 +391,8 @@ function checkCorequisitesMet(courseID) {
   }
 }
 
+//checks if prereqs are met, returns true or an array of unmet
 function checkPrerequisitesMet(courseID) {
-  //Only works if course div is in its semester to be checked
-  //Returns a 2d array of prerequisites/corequisites if not met
-  //several lazy shortcuts so if the database is updated we'll need to go through this again
   for (i in notInDatabase) {
     if (courseID == notInDatabase[i]) {
       return true;
@@ -459,27 +472,4 @@ function checkPrerequisitesMet(courseID) {
     }
     return notMetArray;
   }
-}
-
-function h(){
-  var start = document.getElementById("first").value;
-  var end = document.getElementById("last").value;
-
-  if(start > end || start < 2014){
-    alert("Incorrect inputs in Semester Generator section");
-  }
-  else {
-    var newStr = '';
-  }
- //else{
-   //var x = (end - start)*2;
-   //while(x!=0){
-   //document.open();
-   //window.document.write("<p>pasopa</p>")
-   //var btn = document.getElementById("s1").innerHTML = "Fall 2018";
-   //document.write("<h1>hola</h1>");
-   //x = x-1;
-   //}
- //document.close();
- //}
 }
