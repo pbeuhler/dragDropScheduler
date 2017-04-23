@@ -365,9 +365,6 @@ function checkCorequisitesMet(courseID) {
 
   var corequisites = getValue('Corequisites', courseID);
   var curSemester = document.getElementById(courseID).parentNode.id;
-  if (curSemester == 'Required') {
-    curSemester = 's8';
-  }
   if (corequisites == '-') {
     return true;
   }
@@ -375,7 +372,9 @@ function checkCorequisitesMet(courseID) {
   if (corequisites.indexOf('+') > -1) {
     coreqArray = corequisites.split('+');
   }
-
+  if (curSemester == 'Required') {
+    return coreqArray;
+  }
   var coreqMetFlag = false;
   var semesterCourses = [];
   for (i in coreqArray) {
@@ -412,9 +411,6 @@ function checkPrerequisitesMet(courseID) {
 
   var prerequisites = getValue('Prerequisites', courseID);
   var curSemester = document.getElementById(courseID).parentNode.id;
-  if (curSemester == 'Required') {
-    curSemester = 's8';
-  }
   if (prerequisites == '-') {
     return true;
   }
@@ -433,6 +429,9 @@ function checkPrerequisitesMet(courseID) {
   if (prereqType == '') {
     prereqArray = [prerequisites];
     prereqType = '+';
+  }
+  if (curSemester == 'Required') {
+    return prereqArray;
   }
   var prereqMetFlag = false;
   var orFlag = false;
