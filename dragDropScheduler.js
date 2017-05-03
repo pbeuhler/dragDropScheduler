@@ -1,3 +1,5 @@
+//Team 6 Aerospace Course Planner Website
+
 //Initialize the database for use in javascript via sql.js
 var lotInfoDB;
 var oReq = new XMLHttpRequest();
@@ -49,16 +51,23 @@ function hover(ev) {
   refresh();
   refreshWhite();
   divId = ev.getAttribute('id');
+  //if the course is an elective, set the color to green
   for (i in notInDatabase) {
     if (divId == notInDatabase[i]) {
       document.getElementById(divId).style = "background:PaleGreen";
       return true;
     }
   }
+  
+  //update the info box
   document.getElementById('Info').children[0].innerHTML = getValue('Name',divId);
   document.getElementById('Info').children[1].innerHTML = "<br />" + getValue('Description',divId);
+  
+  //logic for checking pre and corequisites
   notMetPreArray = checkPrerequisitesMet(divId);
   notMetCoArray = checkCorequisitesMet(divId);
+  
+  //special logic for AE 590
   if (getValue("Prerequisites", divId) == 'senior') {
     if ((document.getElementById(divId).parentNode.id == 'Required') || (document.getElementById(divId).parentNode.id == 'Prereqs') || (document.getElementById(divId).parentNode.id == 's7')) {
       document.getElementById(divId).style = "background:PaleGreen";
@@ -68,22 +77,30 @@ function hover(ev) {
       return true;
     }
   }
+  
+  //if prereqs and coreqs met
   if ((notMetPreArray == true) && (notMetCoArray == true)) {
     document.getElementById(divId).style = "background:PaleGreen";
     return true;
   }
+  
+  //if coreqs not met
   else if (notMetPreArray == true) {
     document.getElementById(divId).style = "background:IndianRed";
     for (i in notMetCoArray) {
       document.getElementById(notMetCoArray[i]).style = "background:Wheat";
     }
   }
+  
+  //if prereqs not met
   else if (notMetCoArray == true) {
     document.getElementById(divId).style = "background:IndianRed";
     for (i in notMetPreArray) {
       document.getElementById(notMetPreArray[i]).style = "background:Pink";
     }
   }
+  
+  //if both not met
   else {
     document.getElementById(divId).style = "background:IndianRed";
     for (i in notMetPreArray) {
@@ -125,7 +142,7 @@ function drag(ev) {
   ev.dataTransfer.setData("text", ev.target.id);
 }
 
-//refreshes changing backgrounds from red to white
+//refreshes changing backgrounds from red to white, removes values from not met array as necessary
 function refresh() {
   var prereqs = 0;
   var coreqs = 0;
@@ -134,6 +151,7 @@ function refresh() {
   for (iters in unmet) {
     prereqs = checkPrerequisitesMet(unmet[iters]);
     coreqs = checkCorequisitesMet(unmet[iters]);
+	//if prereqs and coreqs are met or the parent is required or the parent is already met
     if (((prereqs == true) && (coreqs == true)) || (document.getElementById(unmet[iters]).parentNode.id == "Required") || (document.getElementById(unmet[iters]).parentNode.id == "Prereqs")) {
       document.getElementById(unmet[iters]).style = "background:white";
       unmet.splice(iters,1);
@@ -362,7 +380,7 @@ function checkCorequisitesMet(courseID) {
       return true;
     }
   }
-
+	//iterate through all courses in all divs and compare to check whether coreqs are met
   var corequisites = getValue('Corequisites', courseID);
   var curSemester = document.getElementById(courseID).parentNode.id;
   if (corequisites == '-') {
@@ -414,7 +432,7 @@ function checkPrerequisitesMet(courseID) {
   if (prerequisites == '-') {
     return true;
   }
-
+	//check if prereqs are or or and
   var prereqType = '';
   var prereqArray = [];
   var metArray = [];
@@ -433,6 +451,7 @@ function checkPrerequisitesMet(courseID) {
   if (curSemester == 'Required') {
     return prereqArray;
   }
+  //logic for checking prereqs
   var prereqMetFlag = false;
   var orFlag = false;
   for (i in prereqArray) {
