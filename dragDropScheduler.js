@@ -1,6 +1,11 @@
 //Team 6 Aerospace Course Planner Website
+//Written by John Freeman
+//Debugged by John Freeman
+//Tested by John Freeman
 
 //Initialize the database for use in javascript via sql.js
+//Sourced from https://github.com/kripken/sql.js/
+//Used under MIT License copyright
 var lotInfoDB;
 var oReq = new XMLHttpRequest();
 oReq.open("GET", "https://people.eecs.ku.edu/~jfreeman67/Lab5/448.db", true);
@@ -12,14 +17,12 @@ oReq.onload = function(e) {
 oReq.send();
 
 //Global arrays for use in logic
-var semestersArray = ['Prereqs', 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8'];
-var dropArr = ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8'];
-var notInDatabase = ['KUCore1', 'KUCore2', 'KUCore3', 'KUCore4', 'Tech1', 'KUCore5', 'Tech2', 'Tech3', 'KUCore6'];
-var Used = [];
-var preReq = [];
-var unmet = [];
+var semestersArray = ['Prereqs', 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8']; //all the semesters including the already met
+var dropArr = ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8']; //all the semesters not including already met
+var notInDatabase = ['KUCore1', 'KUCore2', 'KUCore3', 'KUCore4', 'Tech1', 'KUCore5', 'Tech2', 'Tech3', 'KUCore6']; //all the generic electives
+var unmet = []; //courses with unmet pre/coreqs
 
-//returns an array of the ids of children of a passed div ID
+//returns an array containing the ids of children of a passed div ID
 function getChildren(divID) {
   var div = document.getElementById(divID);
   var children = div.childNodes;
@@ -32,7 +35,7 @@ function getChildren(divID) {
   return elements;
 }
 
-//handles drag functionality
+//handles html drag functionality
 function dragStart(ev) {
    ev.dataTransfer.effectAllowed='move';
    ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
@@ -40,7 +43,7 @@ function dragStart(ev) {
 
 }
 
-//handles drop functionality
+//handles html drop functionality
 function allowDrop(ev) {
   ev.preventDefault();
   //info();
@@ -170,14 +173,19 @@ function refreshUnmetArray() {
   var prereqsMet = [];
   var coreqsMet = [];
   var data = "";
+  //iterate through the semesters
   for (unmetIters in dropArr) {
+	  //get the courses in the semester
     curArray = getChildren(dropArr[unmetIters]);
+	//iterate through courses
     for (childIter in curArray) {
       data = curArray[childIter];
       prereqsMet = checkPrerequisitesMet(data);
       coreqsMet = checkCorequisitesMet(data);
+	  //if prereqs or coreqs are not met
       if ((prereqsMet != true) || coreqsMet != true) {
         document.getElementById(data).style = "background:IndianRed";
+		//if the course is not in the unmet database and should be, add it to the array
         if (!(unmet.indexOf(document.getElementById(data).id) > -1)) {
           if ((document.getElementById(document.getElementById(data).id).parentNode.id != 'Required') && (document.getElementById(document.getElementById(data).id).parentNode.id != 'Prereqs')) {
             unmet.push(document.getElementById(data).id);
@@ -217,9 +225,11 @@ function refreshSemesterHours() {
 
 //iterates through draggables and resets them to white unless they are in the unmet array on drop or hover leave
 function refreshWhite() {
+	//get all the semesters
   var x = document.querySelectorAll("*[draggable=true]");
     for (whiteIter in x) {
       if ((typeof x[whiteIter]) == 'object') {
+		  //if not unmet and the semester placement is valid, make it white, otherwise make it red, or gold if pre/coreqs met and semester is invalid
         if ((!(unmet.indexOf(x[whiteIter].id) > -1) && (checkSemesters(x[whiteIter].id) == true))) {
           x[whiteIter].style = "background:white";
         }
@@ -236,11 +246,13 @@ function refreshWhite() {
 
 //drop functionality, handles checking if the semester is valid, refreshing, updating info, etc.
 function drop(ev) {
+	//initialize logic variables
   ev.preventDefault();
   var data = ev.dataTransfer.getData("text");
   var targetDiv = ev.target;
   var firstFlag = false;
   var parentFlag = false;
+  //make sure the course appends to the right parent
   for (checkIter in semestersArray) {
     if (targetDiv.id == semestersArray[checkIter]) {
       firstFlag = true;
@@ -249,16 +261,20 @@ function drop(ev) {
       parentFlag = true;
     }
   }
+  //special logic for dropping into required div
   if (targetDiv.id == "Required") {
     targetDiv.appendChild(document.getElementById(data));
+	//refresh course coloring
     refresh();
     refreshSemesterHours();
     refreshUnmetArray();
     refreshWhite();
+	//update info box
     document.getElementById('Info').children[0].innerHTML = getValue('Name',data);
     document.getElementById('Info').children[1].innerHTML = "<br />" + getValue('Description',data);
     return true;
   }
+  //set target to parent of target if necessary, otherwise break
   if (firstFlag == false) {
     if (parentFlag == true) {
       targetDiv = targetDiv.parentNode;
@@ -267,16 +283,19 @@ function drop(ev) {
       return false;
     }
   }
+  //refresh coloring
   targetDiv.appendChild(document.getElementById(data));
   refresh();
   refreshSemesterHours();
   refreshUnmetArray();
   refreshWhite();
+  //get course requirement info
 	var prereqsMet = checkPrerequisitesMet(document.getElementById(data).id);
 	var coreqsMet = checkCorequisitesMet(document.getElementById(data).id);
 	var semesterRight = checkSemesters(document.getElementById(data).id);
 	var credits = getCreditsSemester(targetDiv.id);
   notFlag = false;
+  //if the course is an elective, don't update the info
   for (i in notInDatabase) {
     if (divId == notInDatabase[i]) {
       notFlag = true;
@@ -286,9 +305,11 @@ function drop(ev) {
     document.getElementById('Info').children[0].innerHTML = getValue('Name',data);
     document.getElementById('Info').children[1].innerHTML = "<br />" + getValue('Description',data);
   }
+  //if semester is invalid, make the background gold
   if (semesterRight == false) {
     document.getElementById(data).style = "background:gold";
   }
+  //if the semester is valid, check pre/coreqs and color accordingly
   else {
     if (unmet.indexOf(document.getElementById(data).id) > -1) {
       document.getElementById(data).style = "background:IndianRed";
@@ -344,6 +365,7 @@ function checkSemesters(courseID) {
   if ((curSemester == 'Required') || (curSemester == 'Prereqs')) {
     return true;
   }
+  //special logic for ae 590
   if (getValue('Prerequisites', courseID) == 'senior') {
     if (curSemester == 's7') {
       return true;
@@ -383,16 +405,22 @@ function checkCorequisitesMet(courseID) {
 	//iterate through all courses in all divs and compare to check whether coreqs are met
   var corequisites = getValue('Corequisites', courseID);
   var curSemester = document.getElementById(courseID).parentNode.id;
+  
+  //if there are no coreqs, return true
   if (corequisites == '-') {
     return true;
   }
+  
+  //split along + into individual id
   var coreqArray = [corequisites];
   if (corequisites.indexOf('+') > -1) {
     coreqArray = corequisites.split('+');
   }
+  //if the current semester is required, return them all
   if (curSemester == 'Required') {
     return coreqArray;
   }
+  //iterate through all courses in semesters before or at the current, return true if one is a coreq, array otherwise
   var coreqMetFlag = false;
   var semesterCourses = [];
   for (i in coreqArray) {
@@ -451,7 +479,7 @@ function checkPrerequisitesMet(courseID) {
   if (curSemester == 'Required') {
     return prereqArray;
   }
-  //logic for checking prereqs
+  //logic for checking prereqs by incrementing a counter of prereqs
   var prereqMetFlag = false;
   var orFlag = false;
   for (i in prereqArray) {
@@ -468,21 +496,27 @@ function checkPrerequisitesMet(courseID) {
       }
     }
   }
+  //met array corresponds to met prereqs, if they are all met that length and the prereq array length should be the same
   if ((metArray.length == prereqArray.length) && (prereqType == '&')) {
     prereqMetFlag = true;
   }
   if (prereqType == '+') {
     prereqMetFlag = orFlag;
   }
+  
+  //logic for ae 590
   if (prerequisites == 'senior') {
     prereqMetFlag = true;
   }
+  
+  //no prereqs
   if (prerequisites == '-') {
     prereqMetFlag = true;
   }
   if (prereqMetFlag) {
     return true;
   }
+  //create not met array and return it if there are missing prereqs
   else {
     var notMetArray = [];
     var metFlag = false;

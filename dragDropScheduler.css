@@ -1,3 +1,6 @@
+/* Authors: Patrick Beuhler, John Freeman */
+/* Debugging: Patrick Beuhler, John Freeman */
+/* Testing: Patrick Beuhler, Joe Goldsich, John Freeman */
 
 <!--/* Prevent the text contents of draggable elements from being selectable. */
 [draggable] {
@@ -92,7 +95,7 @@
     display: table;
     width: 8%;
     height: auto;
-    padding: 0.2%;
+    padding: 0.25%;
     border: 3px solid black;
     font-size:12px;
     text-align: left;
