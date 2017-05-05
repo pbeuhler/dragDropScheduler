@@ -1,7 +1,6 @@
 <!DOCTYPE HTML>
 <html>
    <head>
-	   <!-- written, tested, debugged by PB, JP, JF, JG -->
     <link rel="stylesheet" href="dragDropScheduler.css">
     <script src="sql.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
@@ -11,7 +10,8 @@
 		<div style="color:#3366ff;font-family:arial;" align="center">
 		<h3>Course Planner - Pijamajammers</h3>
 
-		<Required id="Required" draggable="true" ondrop="drop(event)" ondragover="allowDrop(event)"><div class = "title">Required Courses- Hover for Course Description</div>
+		<Required id="Required" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><div class = "title">Required Courses</div>
+
 				<div id="MATH125" draggable="true" onmouseover="hover(this)" onmouseleave="leave(this)" ondragstart="drag(event)" title = "Calc 1" style="background:white">MATH 125</div>
 				<div id="CHEM150" draggable="true" onmouseover="hover(this)" onmouseleave="leave(this)" ondragstart="drag(event)" title = "Chemistry for Engineers" style="background:white">CHEM 150</div>
 				<div id="AE245" draggable="true" onmouseover="hover(this)" onmouseleave="leave(this)" ondragstart="drag(event)" title = "Intro to Aero" style="background:white">AE 245</div>
@@ -55,19 +55,28 @@
 				<div id="Tech3" draggable="true" onmouseover="hover(this)" onmouseleave="leave(this)" ondragstart="drag(event)" title = "Technical Elective" style="background:white">Tech Elec 3</div>
 				<div id="KUCore6" draggable="true" onmouseover="hover(this)" onmouseleave="leave(this)" ondragstart="drag(event)" title = "AE 4.2" style="background:white">KU Core 6</div>
 		</Required>
-			
+    <div id = "ColorKey">
+      <div class = "title">Color Key</div>
+      <div id="green" draggable="false" class="keyBlock" style="background:PaleGreen">Valid Choice</div>
+      <div id="wheat" draggable="false" class="keyBlock" style="background:Wheat">Coreq Missing for Selection</div>
+      <div id="indianred" draggable="false" class="keyBlock" style="background:IndianRed">Invalid Choice</div>
+      <div id="pink" draggable="false" class="keyBlock" style="background:Pink">Prereq Missing for selection</div>
+      <div id="gold" draggable="false" class="keyBlock" style="background:gold">Not Offered in Selected Semester</div>
+      <div id="DarkOrange" draggable="false" class="keyBlock" style="background:DarkOrange">Taking More than 19 Credits</div>
+    </div>
+
 		<Prereqs id="Prereqs" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><div class = "title">Prior Credits</div></Prereqs>
 		<div id = "SemesterBlock">
-			<Semester id="s1" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><div class = "title">Fall 1</div></Semester>
-			<Semester id="s2" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><div class = "title">Spring 1</div></Semester>
-	        <Semester id="s3" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><div class = "title">Fall 2</div></Semester>
-			<Semester id="s4" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><div class = "title">Spring 2</div></Semester>
-	        <Semester id="s5" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><div class = "title">Fall 3</div></Semester>
-			<Semester id="s6" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><div class = "title">Spring 3</div></Semester>
-	        <Semester id="s7" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><div class = "title">Fall 4</div></Semester>
-			<Semester id="s8" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><div class = "title">Spring 4</div></Semester>
+			<Semester id="s1" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><div class = "title">Fall 1 (0 Cr)</div></Semester>
+			<Semester id="s2" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><div class = "title">Spring 1 (0 Cr)</div></Semester>
+	        <Semester id="s3" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><div class = "title">Fall 2 (0 Cr)</div></Semester>
+			<Semester id="s4" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><div class = "title">Spring 2 (0 Cr)</div></Semester>
+	        <Semester id="s5" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><div class = "title">Fall 3 (0 Cr)</div></Semester>
+			<Semester id="s6" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><div class = "title">Spring 3 (0 Cr)</div></Semester>
+	        <Semester id="s7" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><div class = "title">Fall 4 (0 Cr)</div></Semester>
+			<Semester id="s8" draggable="false" ondrop="drop(event)" ondragover="allowDrop(event)"><div class = "title">Spring 4 (0 Cr)</div></Semester>
 		</div>
-		<Info id = "Info" draggable="false"><div class = "title">Info</div></Info>
+		<Info id = "Info" draggable="false"><div class = "title">Info</div><div class = "paragraph"></div></Info>
 
    </body>
 </html>
