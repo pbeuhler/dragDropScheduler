@@ -1,6 +1,3 @@
-/* Authors: Patrick Beuhler, John Freeman */
-/* Debugging: Patrick Beuhler, John Freeman */
-/* Testing: Patrick Beuhler, Joe Goldsich, John Freeman */
 
 <!--/* Prevent the text contents of draggable elements from being selectable. */
 [draggable] {
@@ -12,6 +9,7 @@
   -khtml-user-drag: element;
   -webkit-user-drag: element;
 }-->
+
   #Required {
     margin: auto;
     display: inline-block;
@@ -26,13 +24,16 @@
     margin: 0.25%;
     display: block;
     float: left;
-    width: 15%;
+    width: 13%;
     height: 375px;
+    clear: both;
+    background-color: white;
     padding: 0.25%;
     border: 3px solid black;
   }
   html {
     display: inline-table;
+    background: linear-gradient(white, rgb(173,216,255));
     margin: auto;
     height: 100%;
   }
@@ -42,7 +43,7 @@
     margin: 0.25%;
     display: inline-block;
     float: left;
-    width: 52%;
+    width: 48%;
     height: auto;
     padding: 0.25%;
   }
@@ -50,6 +51,7 @@
 
   Semester {
     top: 0;
+    background: white;
     overflow: auto;
     margin: 0.5%;
     display: inline-block;
@@ -63,7 +65,8 @@
     margin: 0.25%;
     display: block;
     float: left;
-    width: 15%;
+    background-color: white;
+    width: 13%;
     height: 375px;
     padding: 0.25%;
     border: 3px solid black;
@@ -93,19 +96,21 @@
     margin: 0.25%;
     float: left;
     display: table;
-    width: 8%;
+    width: 20%;
     height: auto;
     padding: 0.25%;
     border: 3px solid black;
     font-size:12px;
     text-align: left;
   }
+
   #titleKey {
     text-align:center;
     color:white;
     padding: 2px 1px;
     font-size:10px;
   }
+
   .keyBlock {
     margin: 1%;
     display: cell;
@@ -115,4 +120,51 @@
     border: 1px solid black;
     font-size:11px;
   }
+
+  #RecomendedBlock{
+    overflow: auto;
+    margin: auto;
+    display: inline-block;
+    float: center;
+    width: 52%;
+    height: auto;
+    padding: 0.25%;
+  }
+
+  #SectionBlock {
+    width: 100%;
+    height: auto;
+    background-color: blue;
+    float: left;
+    font-size: small;
+  }
+
+  .button {
+    background-color: crimson;
+    border: solid;
+    border-width: thin;
+    border-color: white;
+    color: white;
+    border-radius: 14px;
+    clear: both;
+    float: left;
+    padding: 1em;
+    font-size: 14px;
+  }
+
+  #container {
+    width: 100%;
+    height: auto;
+    clear: both;
+
+  }
+
+  #header {
+    padding: 1em;
+    color: blue;
+    background-color: white;
+    clear: left;
+    text-align: center;
+  }
+
 }
